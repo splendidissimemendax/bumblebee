@@ -1,6 +1,6 @@
 # Bumblebee
 
-A JS-based framework for building a site, based on the [Zonelots framework](https://codeberg.org/01bbl/Zonelots) (itself based off [Zonelets](https://zonelets.net/), with added tagging functionality). This is primarily a personal project (it's what I use on my Neocities site) and is thus fairly idiosyncratic, but I wanted to make it available in case anyone else might find it useful.
+A JS-based framework for building a site, based on the [Zonelots framework](https://codeberg.org/01bbl/Zonelots) (itself based off [Zonelets](https://zonelets.net/), with added tagging functionality). This is primarily a personal project (it's what I use on my own site) and is thus fairly idiosyncratic, but I wanted to make it available in case anyone else might find it useful.
 
 ## differences
 
