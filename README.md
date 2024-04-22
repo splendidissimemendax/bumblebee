@@ -16,7 +16,7 @@ A JS-based framework for building a site, based on the [Zonelots framework](http
 
 1. **Update**: The most important feature is that I've fixed the bit of the code that was broken, based on a solution worked out by [strflr](https://strflr.neocities.org/blog/posts/2024-03-24-Zonelots-Fix).
 
-2. **Automation**: I've written some Python code that makes use of the Neocities CLI to automate things like pushing updates. Basically, you only have to use the Neocities dashboard to delete or rename files and you only have to enter the Javascript to do the initial set-up or to backdate a post.
+2. **Automation**: Basically, you only have to enter the Javascript to do the initial set-up or to backdate a post.
 
 3. **Projects**: Based on the framework of tagging. I personally have a bunch of tags and having a separate system for projects (rather than just using tags) helps me keep things organized.
 
