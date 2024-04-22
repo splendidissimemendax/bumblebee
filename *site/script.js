@@ -1,40 +1,28 @@
-/*
+/* 
 CONTENTS
-	1. Basic Info
-	2. The Content
-		2.1. Posts
-		2.2. Messages
-	3. Creating Insertable HTML
-		3.1. Post Page
-		3.2. Archive List
-		3.3. Recent Post List
-		3.4. Tag Index
-	4. Inserting HTML Into Pages
-
-INSTRUCTIONS
-	To add a new post, copy this object literal into the top of postsArray in section 2.1:
-		{
-			path: "filename",
-			title: "post title/heading",
-			description: "",
-			tags: ["tag 1", "tag 2", "etc."],
-			projects: ["project"]
-		},
-	Replace 'filename' with the name of the file (not the file extension, though).
-	Replace 'post title/heading' with a human-readable post title.
-	Replace 'tag 1', 'tag 2' etc. with tags (if no tags, leave the array empty).
-
-	Safe characters to use in titles: anything except ordinary (not left/right) double-quotes.
-	To use ordinary double-quotes, put a backslash before each one.
-	(e.g. title: "How to \"use\" double-quotes in titles")
-
-	Safe characters to use in tags:
-		letters (upper- or lowercase)
-		numbers
-		? / : @ - . _ ~ ! $ & ' ( ) * + , ; = (question mark, slash, colon, at sign, hyphen-minus, period, underscore, tilde, exclamation mark, dollar, ampersand, apostrophe, left parenthesis, right parenthesis, asterisk, plus, comma, semicolon, equals)
-		spaces (will be replaced by hyphens in tag urls)
-
-	To add a new message, add it to messagesArray in section 2.2. The order doesn't matter.
+1. Basic info
+	1a. Variables
+	1b. Misc
+2. Arrays
+	2a. Header messages
+	2b. Pages
+	2c. Posts
+	2d. Footer links
+3. Functions
+	3a. Misc adjustments
+	3b. Header functions
+	3c. Page functions
+	3d. Post functions
+4. HTML generation
+	4a. Header HTML
+	4b. Footer HTML
+	4c. Post page HTML
+	4d. Home page HTML
+	4e. Pages page HTML
+	4f. Archive page HTML
+	4g. Tags page HTML
+	4h. Projects page HTML
+5. HTML insertion
 */
 
 
@@ -43,35 +31,115 @@ INSTRUCTIONS
 	1. BASIC INFO
 ================== */
 
-// these are the only things you should have to change by hand (assuming you're not backdating posts)
+/* ------------------
+	1A. VARIABLES
+------------------ */
 
 const blogName = "{{BLOG NAME}}";
-const recentPostsCutoff = 5; // set the number of most-recent posts displayed on the index page
-const headerMessageOn = true; // switch header messages on (true) or off (false)
-const linkIntro = "Links:"; // the thing it says before the footer links
-let trekify = false; // engage star trek theme
+const recentPostsCutoff = 5;
+const headerMessageOn = true;
+const linkIntro = "Links:";
+let trekify = false;
 
-// messages and footer links
-const messagesArray = [
-	{quote: "Quote A", source: "Source A" },
-	{quote: "Quote B", source: "Source B"}
-];
-const footerLinks = [
-	'<a href="https://wikipedia.org">{{LINK A}}</a>',
-	'<a href="https://archive.org">{{LINK B}}</a>'
-];
+/* ------------------
+	1B. MISC
+------------------ */
 
 const url = window.location.pathname;
 
+const postDateFormat = /\d{4}\-\d{2}\-\d{2}\_/;
+
+const blog = {
+	// header
+	header: { id: "header", HTML: "" },
+	messageList: { id: "message-list", HTML: ""},
+
+	// page lists to display on various pages
+	pageList: { id: "page-list", HTML: ""},
+	pageDisplay: {id: "page-display", HTML: ""},
+
+	// post lists to display on various pages 
+	archivePostList: { id: "archive-post-list", HTML: "" },
+	recentPostList: { id: "recent-post-list", HTML: "" },
+	tagIndex: { id: "tag-index", HTML: "" },
+	projectIndex: { id: "project-index", HTML: "" },
+
+	// post data
+	niceDate: { id: "post-date", HTML: "" },
+	postMeta: { id: "post-meta", HTML: "" },
+	postNav: { id: "post-nav", HTML: "" },
+
+	// footer
+	footer: { id: "footer", HTML: "" }
+};
+
+const monthNums2Names = {
+	"01": "January",
+	"02": "February",
+	"03": "March",
+	"04": "April",
+	"05": "May",
+	"06": "June",
+	"07": "July",
+	"08": "August",
+	"09": "September",
+	"10": "October",
+	"11": "November",
+	"12": "December"
+};
 
 
-/* ===================
-	2. THE CONTENT
-=================== */
 
-/* ---------------
-	2.1. POSTS
---------------- */
+/* ==================
+	2. ARRAYS
+================== */
+
+/* ------------------
+	2A. HEADER MESSAGES
+------------------ */
+
+const messagesArray = [
+	{
+		quote: "Quote A", 
+		source: "Source A" 
+	},
+	{
+		quote: "Quote B", 
+		source: "Source B"
+	}
+];
+
+/* ------------------
+	2B. PAGES
+------------------ */
+
+const pageArray = [
+	{
+		path: "favorite_things",
+		title: "favorite things",
+		description: "These are a few of my favorite things.",
+		display: true,
+		directory: false
+	},
+	{
+		path: "sources",
+		title: "sources",
+		description: "The sources of my header messages.",
+		display: true,
+		directory: false
+	},
+	{
+		path: "about",
+		title: "about",
+		description: "About me.",
+		display: false,
+		directory: false
+	}
+];
+
+/* ------------------
+	2C. POSTS
+------------------ */
 
 const postsArray = [
 	{
@@ -97,81 +165,56 @@ const postsArray = [
 	}
 ];
 
+/* ------------------
+	2D. FOOTER LINKS
+------------------ */
+
+const footerLinks = [
+	'<a href="https://wikipedia.org">{{LINK A}}</a>',
+	'<a href="https://archive.org">{{LINK B}}</a>'
+];
+
+
+
+/* ==================
+	3. FUNCTIONS
+================== */
+
+/* ------------------
+	3A. MISC ADJUSTMENTS
+------------------ */
+
 for (let i in postsArray) postsArray[i].path = "posts/" + postsArray[i].path + ".html";
 
 
-const pageArray = [
-	{
-		path: "favorite things",
-		title: "favorite things",
-		description: "These are a few of my favorite things."
-	},
-	{
-		path: "sources",
-		title: "sources",
-		description: "The sources of my header messages."
+for (let i in pageArray) {
+	if (pageArray[i].directory) {
+		pageArray[i].path = "pages/" + pageArray[i].path + "/index.html";
+	} else {
+		pageArray[i].path = "pages/" + pageArray[i].path + ".html";
 	}
-];
+	
+}
 
-for (let i in pageArray) pageArray[i].path = "pages/" + pageArray[i].path + ".html";
-
-
-/* ================================
-	3. CREATING INSERTABLE HTML
-================================ */
-
-function formatPostLink(i, postsArray) { // take an index and an array of posts (which may be postsArray or a subset) and return an HTML-tagged link for that indexed post
-	let linkText = "";
-	const postTitle = postsArray[i].title;
-	const postDescr = postsArray[i].description;
-	const postTags = postsArray[i].tags;
-
-	linkText += '<li class="box"><a href="' + relativePath + '/' + postsArray[i].path + '">';
-
-	const monthNums2Names = {
-		"01": "January",
-		"02": "February",
-		"03": "March",
-		"04": "April",
-		"05": "May",
-		"06": "June",
-		"07": "July",
-		"08": "August",
-		"09": "September",
-		"10": "October",
-		"11": "November",
-		"12": "December"
-	};
-
-	linkText += '<span class="post-title">' + postTitle + "</span>";
-	if (postDateFormat.test(postsArray[i].path.slice(6, 17))) linkText += " | " + monthNums2Names[postsArray[i].path.slice(11, 13)] + " " + postsArray[i].path.slice(14, 16) + ", " + postsArray[i].path.slice(6, 10) + '</a>';
-
-	if (postDescr && postDescr.length) linkText += '<p>' + postDescr + '</p>';
-
-	if (postTags && postTags.length) {
-		postTags.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-		for (let i = 0; i < postTags.length; i++) {
-			let tagName = postTags[i];
-			postTags[i] = '<li><a href="' + relativePath + '/tags.html#--' + tagName.replace(/\s/g, "-") + '" rel="tag">' + tagName + '</a></li>';
+const pagesSorted = pageArray.sort(
+	(a, b) => {
+		const titleA = a.title.toUpperCase(); // ignore upper and lowercase
+		const titleB = b.title.toUpperCase(); // ignore upper and lowercase
+		if (titleA < titleB) {
+		  return -1;
 		}
-		linkText += '<dl><dt>Tags</dt><dd class="tag-list">' + postTags.join("") + '</dd></dl>';
-	}
+		if (titleA > titleB) {
+		  return 1;
+		}
+	  
+		// titles must be equal
+		return 0;
+	  }
+);
 
-	return linkText;
-}
-
-function formatPageLink(i, pageArray) { // take an index and an array of posts (which may be postsArray or a subset) and return an HTML-tagged link for that indexed post
-	let linkText = "";
-	const pageTitle = pageArray[i].title;
-	const pageDescr = pageArray[i].description;
-
-	linkText += '<li><a href="' + relativePath + '/' + pageArray[i].path + '"><span class="post-title">' + pageTitle + '</span></a> | ';
-
-	if (pageDescr && pageDescr.length) linkText += pageDescr;
-
-	linkText += '</li>';
-	return linkText;
-}
+/* ------------------
+	3B. HEADER FUNCTIONS
+------------------ */
 
 function formatMessages(i, messagesArray) { // take an index and an array of posts (which may be postsArray or a subset) and return an HTML-tagged link for that indexed post
 	let messageText = "";
@@ -183,10 +226,64 @@ function formatMessages(i, messagesArray) { // take an index and an array of pos
 	return messageText;
 }
 
-function buildPostIndex(tagType, emptyMessage) { // take a json object of posts pre-sorted by tags (or another parameter) and output HTML for a list of tags, each of which has a sub-lists of posts
+/* ------------------
+	3C. PAGE FUNCTIONS
+------------------ */
+
+function formatPageLink(i, pageArray) {
+	let linkText = "";
+	const pageTitle = pageArray[i].title;
+	const pageDescr = pageArray[i].description;
+
+	linkText += '<li><a href="/' + pageArray[i].path + '"><span class="post-title">' + pageTitle + '</span></a> | ';
+
+	if (pageDescr && pageDescr.length) linkText += pageDescr;
+
+	linkText += '</li>';
+	return linkText;
+}
+
+function formatPageTitle(i, pageArray) { 
+	let linkText = "";
+	const pageTitle = pageArray[i].title;
+
+	linkText += '<li class="post-title"><a href="/' + pageArray[i].path + '">' + pageTitle + '</a></li>';
+	return linkText;
+}
+
+/* ------------------
+	3D. POST FUNCTIONS
+------------------ */
+
+function formatPostLink(i, postsArray) {
+	let linkText = "";
+	const postTitle = postsArray[i].title;
+	const postDescr = postsArray[i].description;
+	const postTags = postsArray[i].tags;
+
+	linkText += '<li class="box"><a href="/' + postsArray[i].path + '">';
+
+	linkText += '<span class="post-title">' + postTitle + "</span>";
+	if (postDateFormat.test(postsArray[i].path.slice(6, 17))) linkText += " | " + monthNums2Names[postsArray[i].path.slice(11, 13)] + " " + postsArray[i].path.slice(14, 16) + ", " + postsArray[i].path.slice(6, 10) + '</a>';
+
+	if (postDescr && postDescr.length) linkText += '<p>' + postDescr + '</p>';
+
+	if (postTags && postTags.length) {
+		postTags.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+		for (let i = 0; i < postTags.length; i++) {
+			let tagName = postTags[i];
+			postTags[i] = '<li><a href="/pages/tags.html#--' + tagName.replace(/\s/g, "-") + '" rel="tag">' + tagName + '</a></li>';
+		}
+		linkText += '<dl><dt>Tags</dt><dd class="tag-list">' + postTags.join("") + '</dd></dl>';
+	}
+
+	return linkText;
+}
+
+function buildPostIndex(tagType, emptyMessage) {
 	let listText = "";
 
-	for (let i = 0; i < postsArray.length; i++) { // set up an object of all posts by tag
+	for (let i = 0; i < postsArray.length; i++) {
 		for (let j = 0; j < postsArray[i][tagType].length; j++) {
 			if (typeof allTags[postsArray[i][tagType][j]] == 'undefined') allTags[postsArray[i][tagType][j]] = [];
 
@@ -198,101 +295,46 @@ function buildPostIndex(tagType, emptyMessage) { // take a json object of posts 
 	if (allTagNames.length > 0) {
 		for (let i = 0; i < allTagNames.length; i++) {
 			let tagName = allTagNames[i];
-			listText += '<li><details id="--' + tagName.replace(/ /g, "-") + '"><summary>' + tagName + '</summary><ul class="post-list">';
-			for (let j = 0; j < allTags[tagName].length; j++) listText += formatPostLink(j, allTags[tagName]);
-			listText += '</ul></details></li>';
+			if (tagType == "projects") {
+				listText += '<li><details id="--' + tagName.replace(/ /g, "-") + '"><summary>' + tagName + '</summary><ol class="post-list">';
+				for (let j = allTags[tagName].length - 1; j >= 0; j--) listText += formatPostLink(j, allTags[tagName]);
+			} else {
+				listText += '<li><details id="--' + tagName.replace(/ /g, "-") + '"><summary>' + tagName + '</summary><ol reversed class="post-list">';
+				for (let j = 0; j < allTags[tagName].length; j++) listText += formatPostLink(j, allTags[tagName]);
+			}
+			listText += '</ol></details></li>';
 		}
 	} else listText += '<li>' + emptyMessage + '</li>';
 
 	return listText;
 }
 
-function buildProjIndex(projectType, emptyMessage) { // take a json object of posts pre-sorted by projects (or another parameter) and output HTML for a list of projects, each of which has a sub-lists of posts
-	let listText = "";
 
-	for (let i = 0; i < postsArray.length; i++) { // set up an object of all posts by project
-		for (let j = 0; j < postsArray[i][projectType].length; j++) {
-			if (typeof allProjects[postsArray[i][projectType][j]] == 'undefined') allProjects[postsArray[i][projectType][j]] = [];
 
-			allProjects[postsArray[i][projectType][j]].push({ path: postsArray[i].path, title: postsArray[i].title });
-		}
-	}
-	const allProjectNames = Object.keys(allProjects).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+/* ==================
+	4. HTML GENERATION
+================== */
 
-	if (allProjectNames.length > 0) {
-		for (let i = 0; i < allProjectNames.length; i++) {
-			let projectName = allProjectNames[i];
-			listText += '<li><details id="--' + projectName.replace(/ /g, "-") + '"><summary>' + projectName + '</summary><ul class="post-list">';
-			for (let j = allProjects[projectName].length - 1; j >= 0; j--) listText += formatPostLink(j, allProjects[projectName]);
-			listText += '</ul></details></li>';
-		}
-	} else listText += '<li>' + emptyMessage + '</li>';
-
-	return listText;
-}
-
-function buildPageIndex(tagType, emptyMessage) { // take a json object of posts pre-sorted by tags (or another parameter) and output HTML for a list of tags, each of which has a sub-lists of posts
-	let listText = "";
-
-	for (let i = 0; i < postsArray.length; i++) { // set up an object of all posts by tag
-		for (let j = 0; j < postsArray[i][tagType].length; j++) {
-			if (typeof allTags[postsArray[i][tagType][j]] == 'undefined') allTags[postsArray[i][tagType][j]] = [];
-
-			allTags[postsArray[i][tagType][j]].push({ path: postsArray[i].path, title: postsArray[i].title });
-		}
-	}
-	const allTagNames = Object.keys(allTags).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-
-	if (allTagNames.length > 0) {
-		for (let i = 0; i < allTagNames.length; i++) {
-			let tagName = allTagNames[i];
-			listText += '<li><details id="--' + tagName.replace(/ /g, "-") + '"><summary>' + tagName + '</summary><ul class="post-list">';
-			for (let j = 0; j < allTags[tagName].length; j++) listText += formatPostLink(j, allTags[tagName]);
-			listText += '</ul></details></li>';
-		}
-	} else listText += '<li>' + emptyMessage + '</li>';
-
-	return listText;
-}
-
-// final array of blog items (outer key: variable name, inner values: HTML element id/class and inner HTML)
-const blog = {
-	header: { id: "header", HTML: "" },
-	niceDate: { id: "post-date", HTML: "" },
-	postMeta: { id: "post-meta", HTML: "" },
-	postNav: { id: "post-nav", HTML: "" },
-	footer: { id: "footer", HTML: "" },
-	archivePostList: { id: "archive-post-list", HTML: "" },
-	recentPostList: { id: "recent-post-list", HTML: "" },
-	tagIndex: { id: "tag-index", HTML: "" },
-	projectIndex: { id: "project-index", HTML: "" },
-	pageList: { id: "page-list", HTML: ""},
-	messageList: { id: "message-list", HTML: ""}
-};
-
-// if reader is in posts or projects, put relative path up by one directory
-let relativePath = (url.includes("posts/")) || (url.includes("projects/")) || (url.includes("pages/")) ? ".." : ".";
-
-const postDateFormat = /\d{4}\-\d{2}\-\d{2}\_/;
-
-// write the header HTML
+/* ------------------
+	4A. HEADER HTML
+------------------ */
 
 if (trekify == true) {
-	blog.header.HTML += '<div id="title"><a href="' + relativePath + '/">' + blogName + '</a></div>';
+	blog.header.HTML += '<div id="title"><a href="/">' + blogName + '</a></div>';
 
 	blog.header.HTML += '<nav id="main-nav"><ul>' +
-		'<li><a href="' + relativePath + '/about.html">about</a></li>' +
-		'<li><a href="' + relativePath + '/pages/">pages</a></li>' +
-		'<li><a href="' + relativePath + '/posts/">posts</a></li>'
+		'<li><a href="/pages/about.html">about</a></li>' +
+		'<li><a href="/pages/">pages</a></li>' +
+		'<li><a href="/posts/">posts</a></li>'+
+		'<li><a href="/rss.xml">feed</a></li>' +
 	'</ul></nav>';
-}
-
-else { // add links to the header here
+} else {
 	blog.header.HTML += '<nav id="main-nav"><ul>' +
-		'<li id="title"><a href="' + relativePath + '/">' + blogName + '</a></li>' +
-		'<li><a href="' + relativePath + '/about.html">about</a></li>' +
-		'<li><a href="' + relativePath + '/pages/">pages</a></li>' +
-		'<li><a href="' + relativePath + '/posts/">posts</a></li>'
+		'<li id="title"><a href="/">' + blogName + '</a></li>' +
+		'<li><a href="/pages/about.html">about</a></li>' +
+		'<li><a href="/pages/">pages</a></li>' +
+		'<li><a href="/posts/">posts</a></li>'+
+		'<li><a href="/rss.xml">feed</a></li>' +
 	'</ul></nav>';
 }
 
@@ -301,18 +343,31 @@ if (headerMessageOn && messagesArray.length > 0) {
 	blog.header.HTML += '<hr/><p id="header-message"><svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="8"/></svg> ' + randMessage + '</p>';
 }
 
-// write the footer HTML
+if (document.getElementById(blog.messageList.id)) {
+	for (let i = 0; i < messagesArray.length; i++) {
+		blog.messageList.HTML += formatMessages(i, messagesArray);
+	}
+}
+
+/* ------------------
+	4B. FOOTER HTML
+------------------ */
+
 blog.footer.HTML += '<hr/><p>' + linkIntro + ' ' + footerLinks.join(" | ");
 blog.footer.HTML += '<a id="return-link" href="#container" rel="return">\u2191 back to top</a></p>';
 
-// To do the following stuff, we want to know where we are in the post array (if we're currently on a post page).
+/* ------------------
+	4C. POST PAGE HTML
+------------------ */
+
+// check if this is a post
 let currentIndex = -1;
 let currentFilename = url.substring(url.lastIndexOf('posts/'));
-// Depending on the web server settings (Or something?), the browser url may or may not have ".html" at the end. If not, we must add it back in to match the posts array. (12-19-2022 fix)
+
 if (!currentFilename.endsWith(".html")) {
 	currentFilename += ".html";
 }
-let i;
+
 for (let i = 0; i < postsArray.length; i++) {
 	if (postsArray[i].path === currentFilename) {
 		currentIndex = i;
@@ -320,115 +375,78 @@ for (let i = 0; i < postsArray.length; i++) {
 	}
 }
 
-/* -------------------
-	3.1. POST PAGE
-------------------- */
-
-// get the current post title, date, and tags (if on a post page), and the post nav links
 const tagList = [];
 const projectList = []
 
 if (currentIndex > -1) {
-	// generate more-readable date
-	const monthNums2Names = {
-		"01": "January",
-		"02": "February",
-		"03": "March",
-		"04": "April",
-		"05": "May",
-		"06": "June",
-		"07": "July",
-		"08": "August",
-		"09": "September",
-		"10": "October",
-		"11": "November",
-		"12": "December"
-	};
-
+	// POST DATE
 	if (postDateFormat.test(postsArray[currentIndex].path.slice(6, 17))) {
 		if (trekify == true) {
 			blog.niceDate.HTML += "Stardate " + postsArray[currentIndex].path.slice(6,10) + postsArray[currentIndex].path.slice(11,13) + "." + postsArray[currentIndex].path.slice(14,16)
-		}
-
-		else {
+		} else {
 			blog.niceDate.HTML += monthNums2Names[postsArray[currentIndex].path.slice(11, 13)] + " " + postsArray[currentIndex].path.slice(14, 16) + ", " + postsArray[currentIndex].path.slice(6, 10)
 		}
 	}
 
 	document.getElementById("post-date").setAttribute("datetime", postsArray[currentIndex].path.slice(6, 16));
 
-	// generate post tags HTML
+	// POST META: TAGS
 	if (postsArray[currentIndex].tags.length > 0) {
 		postsArray[currentIndex].tags.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 		for (let i = 0; i < postsArray[currentIndex].tags.length; i++) {
 			let tagName = postsArray[currentIndex].tags[i];
-			tagList[i] = '<li><a href="' + relativePath + '/tags.html#--' + tagName.replace(/\s/g, "-") + '" rel="tag">' + tagName + '</a></li>';
+			tagList[i] = '<li><a href="/pages/tags.html#--' + tagName.replace(/\s/g, "-") + '" rel="tag">' + tagName + '</a></li>';
 		}
 	} else {
-		tagList[0] = "none";
+		tagList[0] = "<li>none</li>";
 	}
 
 	blog.postMeta.HTML += '<dt>Tags</dt><dd class="tag-list">' + tagList.join("") + '</dd>';
 
-	// generate post projects HTML
+	// POST META: PROJECTS
 	if (postsArray[currentIndex].projects.length > 0) {
 		postsArray[currentIndex].projects.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 		for (let i = 0; i < postsArray[currentIndex].projects.length; i++) {
 			let projectName = postsArray[currentIndex].projects[i];
-			projectList[i] = '<li><a href="' + relativePath + '/projects/#--' + projectName.replace(/\s/g, "-") + '" rel="project">' + projectName + '</a></li>';
+			projectList[i] = '<li><a href="/pages/projects.html#--' + projectName.replace(/\s/g, "-") + '" rel="project">' + projectName + '</a></li>';
 		}
 	} else {
-		projectList[0] = "none";
+		projectList[0] = "<li>none</li>";
 	}
 
 	blog.postMeta.HTML += '<dt>Projects</dt><dd id="project-list">' + projectList.join("") + '</dd>';
-	// generate post nav HTML
+	
+	// POST NAVIGATION
 	let prevPost,
 		nextPost;
 
-	// if before latest post:
 	if (currentIndex > 0) {
 		prevPost = postsArray[currentIndex - 1];
-		blog.postNav.HTML += '<div><a href="' + relativePath + '/' + prevPost.path + '" rel="next">\u2190 Next Post</a><p>' + prevPost.title + '</p></div>';
+		blog.postNav.HTML += '<div><a href="/' + prevPost.path + '" rel="next">\u2190 Next Post</a><p>' + prevPost.title + '</p></div>';
 	} else blog.postNav.HTML += '<div>Latest post!</div>';
 
-	// if after earliest post:
 	if (0 <= currentIndex && currentIndex < postsArray.length - 1) {
 		nextPost = postsArray[currentIndex + 1];
-		blog.postNav.HTML += '<div><a href="' + relativePath + '/' + nextPost.path + '" rel="prev">Previous Post \u2192</a><p>' + nextPost.title + '</p></div>';
+		blog.postNav.HTML += '<div><a href="/' + nextPost.path + '" rel="prev">Previous Post \u2192</a><p>' + nextPost.title + '</p></div>';
 	} else blog.postNav.HTML += '<div>First post!</div>';
 }
 
-/* ----------------------
-	3.2. ARCHIVE LIST
----------------------- */
+/* ------------------
+	4D. HOME PAGE HTML
+------------------ */
 
-// generate the Post List HTML
-if (document.getElementById(blog.archivePostList.id)) {
-	for (let i = 0; i < postsArray.length; i++) {
-		blog.archivePostList.HTML += formatPostLink(i, postsArray);
-	}
-}
+// display pages
+if (document.getElementById(blog.pageDisplay.id)) {
+	blog.pageDisplay.HTML += "Try these pages: "
 
-// generate the Page List HTML
-if (document.getElementById(blog.pageList.id)) {
 	for (let i = 0; i < pageArray.length; i++) {
-		blog.pageList.HTML += formatPageLink(i, pageArray.sort());
+		if (pageArray[i].display) {
+			blog.pageDisplay.HTML += formatPageTitle(i, pagesSorted);
+		}
 	}
 }
 
-// generate the message list html
-if (document.getElementById(blog.messageList.id)) {
-	for (let i = 0; i < messagesArray.length; i++) {
-		blog.messageList.HTML += formatMessages(i, messagesArray);
-	}
-}
-
-/* --------------------------
-	3.3. RECENT POST LIST
--------------------------- */
-
-// generate the Recent Post List HTML
+// recent posts
 if (document.getElementById(blog.recentPostList.id)) {
 	const numberOfRecentPosts = Math.min(recentPostsCutoff, postsArray.length);
 	for (let i = 0; i < numberOfRecentPosts; i++) {
@@ -437,31 +455,51 @@ if (document.getElementById(blog.recentPostList.id)) {
 
 	// if there are more posts than the cutoff, end the list with a link to the Archive
 	if (postsArray.length > recentPostsCutoff) {
-		blog.recentPostList.HTML += '<li id="more-posts"><a href=' + relativePath + '/posts/>\u2192 more posts</a></li>';
+		blog.recentPostList.HTML += '<li id="more-posts"><a href=/posts/>\u2192 more posts</a></li>';
 	}
 }
 
-/* -------------------
-	3.4. TAG AND PROJECT INDEX
-------------------- */
+/* ------------------
+	4E. PAGES PAGE HTML
+------------------ */
 
-// if reader is on the tags page, generate the Tag Index HTML
+if (document.getElementById(blog.pageList.id)) {
+	for (let i = 0; i < pageArray.length; i++) {
+		blog.pageList.HTML += formatPageLink(i, pagesSorted);
+	}
+}
+
+/* ------------------
+	4F. ARCHIVE PAGE HTML
+------------------ */
+
+if (document.getElementById(blog.archivePostList.id)) {
+	for (let i = 0; i < postsArray.length; i++) {
+		blog.archivePostList.HTML += formatPostLink(i, postsArray);
+	}
+}
+
+/* ------------------
+	4G. TAGS PAGE HTML
+------------------ */
+
 const allTags = {};
-
 
 if (document.getElementById(blog.tagIndex.id)) blog.tagIndex.HTML = buildPostIndex("tags", 'This blog currently uses no tags!');
 
-// if reader is on the projects page, generate the Project Index HTML
+/* ------------------
+	4H. PROJECT PAGE HTML
+------------------ */
+
 const allProjects = {};
 
-
-if (document.getElementById(blog.projectIndex.id)) blog.projectIndex.HTML = buildProjIndex("projects", 'This blog currently has no projects!');
-
+if (document.getElementById(blog.projectIndex.id)) blog.projectIndex.HTML = buildPostIndex("projects", 'This blog currently has no projects!');
 
 
-/* =================================
-	4. INSERTING HTML INTO PAGES
-================================= */
+
+/* ==================
+	5. HTML INSERTION
+================== */
 
 // for each blog item, if its element is in the file, insert its HTML
 for (let i in blog) {

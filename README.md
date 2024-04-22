@@ -42,11 +42,9 @@ A JS-based framework for building a site, based on the [Zonelots framework](http
 
 4. Delete the example posts and their data, as well as any unused themes.
 
-5. Add your API key and the path to the *site file to the functions.py.
+5. Add your timezone and the path to the *site file to the functions.py.
 
-6. Push site to Neocities with the script, or upload wherever you choose.
-
-## Adding a post
+## Adding a post/page/RSS feed entry
 
 1. Run functions.py and select the function you want to perform.
 

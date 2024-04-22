@@ -1,15 +1,17 @@
 from os import walk
 from os.path import join, splitext
-from datetime import date
-from subprocess import run
+import datetime
+import pytz
 from re import sub
 import markdown
+from email import utils
 
-api = "" # insert api here
-location = "/Users/Maddie/Desktop/art/coding/bumblebee/\*site" # insert path to *site folder here
+location = "" # insert path to *site folder here
+tz = pytz.timezone('') # insert timezone here
+
 
 # find/replace across files
-def fix(filetype, search, replace, no = 9999):
+def fix(filetype, search, replace, no = -1):
 
 	onlyfiles = []
 	
@@ -48,9 +50,29 @@ def updateindex(path, title, description, tags, projects):
 
 	print("File updated.")
 
+# create a new post
+def newpost(title, description, dt):
+	if dt == "":
+		dt = str(datetime.date.today())
+
+	file = title.replace(" ", "_")
+
+	path = "./*site/posts/" + dt + "_" + file + ".html"
+
+	with open("./*site/posts/template.html", "r") as f:
+		data = f.read()
+	
+	data = data.replace("{{YOUR BLOG POST TITLE HERE}}", title)
+	data = data.replace("{{YOUR BLOG POST DESCRIPTION HERE}}", description)
+
+	with open(path, "w") as f:
+		f.write(data)
+
 # update page index
-def updatepageindex(title, description):
-	replacetext = '\n	{\n		path: "' + title + '",\n		title: "' + title + '",\n		description: "' + description + '"\n	},'
+def updatepageindex(title, description, display, directory):
+	path = title.replace(" ", "_")
+
+	replacetext = '\n	{\n		path: "' + path + '",\n		title: "' + title + '",\n		description: "' + description + '",\n		display: ' + display + ',\n		directory: ' + directory + '\n	},'
 
 	with open("./*site/script.js", "r") as file:
 		data = file.read()
@@ -61,21 +83,7 @@ def updatepageindex(title, description):
 
 	print("File updated.")
 
-# create a new post
-def newpost(title, description, dt = str(date.today())):
-	file = title.replace(" ", "_")
-
-	path = "./*site/posts/" + dt + "_" + file + ".html"
-
-	with open("./*site/posts/template.html", "r") as f:
-		data = f.read()
-		data = data.replace("{{YOUR BLOG POST TITLE HERE}}", title)
-		data = data.replace("{{YOUR BLOG POST DESCRIPTION HERE}}", description)
-
-	with open(path, "w") as f:
-		f.write(data)
-
-# create a new post
+# create a new page
 def newpage(title, description):
 	file = title.replace(" ", "_")
 
@@ -88,12 +96,6 @@ def newpage(title, description):
 
 	with open(path, "w") as f:
 		f.write(data)
-
-# update neocities site
-def push():
-	result = run(["NEOCITIES_API_KEY=" + api + " neocities push " + location], shell=True, capture_output=True, text=True, encoding="utf-8")
-
-	print(result.stdout)
 
 # clean a post
 def clean(filename, dt):
@@ -122,7 +124,7 @@ def clean(filename, dt):
 		f.write(data)
 
 # convert md to html
-def md(filename, dt):
+def md(filename):
 	formatted = filename.replace(" ", "_")
 	path = "./*markdown/" + formatted + ".md"
 
@@ -137,12 +139,11 @@ def md(filename, dt):
 	projects = sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", tempMd)
 
 	if dt == "":
-		dt = str(date.today())
+		dt = str(datetime.date.today())
 
-	titleFormatted = title.replace(" ", "_")
+	titleFormatted = dt + "_" + title.replace(" ", "_")
 
-	indexPath = dt + "_" + titleFormatted
-	newPath = "./*site/posts/" + indexPath + ".html"
+	newPath = "./*site/posts/" +  titleFormatted + ".html"
 
 	tempMd = sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
 
@@ -155,33 +156,56 @@ def md(filename, dt):
 		file = file.replace("{{HERE}}", tempHtml)
 		file = file.replace("class=\"footnote-ref\"", "data-toggle=\"tooltip\" title=\"∞\"")
 		file = file.replace("class=\"footnote-backref\"", "data-toggle=\"tooltip\"")
+		file = file.replace("&#8617;", "<sup>^</sup>")
+		file = sub(r"#fn:\d*\">(\d*)</a>", r'#fn:\1">[\1]</a>', file)
 
 	with open(newPath, "w") as f:
 		f.write(file)
 
-	updateindex(indexPath, title, descr, tags, projects)
+	updateindex(titleFormatted, title, descr, tags, projects)
+
+def rss(title, link, description):
+	nowdt = datetime.datetime.now()
+	nowdt = tz.localize(nowdt)
+	date = utils.format_datetime(nowdt)
+
+	item = "<ttl>20000</ttl>\n\n\t<item>\n\t\t<title>" + title
+	item = item + "</title>\n\t\t<description>\n\t\t\t" + description 
+	item = item + "\n\t\t</description>\n\t\t<link>" + link 
+	item = item + "</link>\n\t\t<pubDate>\n\t\t\t" + date 
+	item = item + "\n\t\t</pubDate>\n\t</item>"
+
+	lastbuild = "<lastBuildDate>\n\t\t" + date + "\n\t</lastBuildDate>"
+
+	with open('./*site/rss.xml', 'r') as f:
+		file = f.read()
+		file = sub('<ttl>20000</ttl>', item, file)
+		file = sub('<lastBuildDate>\n\t\t.*\n\t</lastBuildDate>', lastbuild, file)
+
+	with open('./*site/rss.xml', "w") as f:
+		f.write(file)
 
 
 
 # INPUTS
 
-# fix(filetype, search, replace): find/replace across files
-# updateindex(path, title, tags): updates post index
-# newpost(title): creates a new post
-# push(): updates neocities site
-
-action1 = input("Push changes (1), prepare a file (2), add a page (3), or edit posts (4): ")
+action1 = input("Update RSS feed (1), convert a file (2), add a page (3), or edit posts (4): ")
 
 if int(action1) == 1:
-	push()
+	title = input("page title: ")
+	descr = input("page description: ")
+	link = input("link: https://splendide-mendax.com/")
 
-	print("Changes pushed!\n")
+	link = "https://splendide-mendax.com/" + link
+
+	rss(title, link, descr)
+
+	print("RSS feed updated!\n")
 
 elif int(action1) == 2:
-	postdate = input("post date: ")
 	posttitle = input("post title: ")
 
-	md(posttitle, postdate)
+	md(posttitle)
 
 	print("\nThe post " + posttitle + " has been converted to HTML.")
 
@@ -189,11 +213,23 @@ elif int(action1) == 2:
 elif int(action1) == 3:
 	title = input("page title: ")
 	descr = input("page description: ")
+	display = input("display on home page (t/f): ")
+	directory = input("directory (t/f): ")
+
+	if display.lower() == "t":
+		display = "true"
+	else:
+		display = "false"
+
+	if directory.lower() == "t":
+		directory = "true"
+	else:
+		directory = "false"
 
 	filename = title.replace(" ", "_")
 
 	newpage(title, descr)
-	updatepageindex(title, descr)
+	updatepageindex(title, descr, display, directory)
 
 	print("\nA new post \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
 
@@ -206,12 +242,12 @@ elif int(action1) == 4:
 		descr = input("post description: ")
 		posttags = input("tags (in double quotes, comma separated): ")
 		postprojects = input("projects (in double quotes, comma separated): ")
-		today = str(date.today())
+		today = str(datetime.date.today())
 
 		filename = posttitle.replace(" ", "_")
 		path = today + "_" + filename
 
-		newpost(posttitle, descr)
+		newpost(posttitle, descr, "")
 		updateindex(path, posttitle, descr, posttags, postprojects)
 
 		print("\nA new post \"" + posttitle + "\" with the description \"" + descr + "\" and the tags [" + posttags + "] in the project " + postprojects + " has been created.\n")
@@ -223,7 +259,7 @@ elif int(action1) == 4:
 		posttags = input("tags (in double quotes, comma separated): ")
 		postprojects = input("projects (in double quotes, comma separated): ")
 
-		today = str(date.today())
+		today = str(datetime.date.today())
 
 		filename = posttitle.replace(" ", "_")
 		path = dt + "_" + filename

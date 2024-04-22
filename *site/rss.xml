@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+	<title>Title</title>
+	<description>What's new</description>
+	<link></link>
+	<lastBuildDate>
+		Wed, 03 Apr 2024 00:00:00 +0000
+	</lastBuildDate>
+	<ttl>20000</ttl>
+
+	<item>
+		<title>sample</title>
+		<description>
+			The third of three example posts.
+		</description>
+		<link></link>
+		<pubDate>
+			Wed, 03 Apr 2024 00:00:00 +0000
+		</pubDate>
+	</item>
+
+	<item>
+		<title>example</title>
+		<description>
+			The second of three example posts.
+		</description>
+		<link></link>
+		<pubDate>
+			Tue, 02 Apr 2024 00:00:00 +0000
+		</pubDate>
+	</item>
+
+	<item>
+		<title>archetype</title>
+		<description>
+			The first of three example posts.
+		</description>
+		<link></link>
+		<pubDate>
+			Mon, 01 Apr 2024 00:00:00 +0000
+		</pubDate>
+	</item>
+</channel>
+</rss>
