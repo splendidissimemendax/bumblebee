@@ -1,21 +1,18 @@
 from os import walk
 from os.path import join, splitext
 import datetime
-import pytz
+import zoneinfo
 from re import sub
-import markdown
 from email import utils
 
-location = "" # insert path to *site folder here
-tz = pytz.timezone('') # insert timezone here
-
+tz = zoneinfo.timezone('Etc/GMT+0') # insert timezone here (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 # find/replace across files
 def fix(filetype, search, replace, no = -1):
 
 	onlyfiles = []
 	
-	for root, dirs, files in walk("./*site", topdown=False):
+	for root, dirs, files in walk("./site", topdown=False):
 		for name in files:
 			onlyfiles.append(join(root, name))
 
@@ -41,11 +38,11 @@ def fix(filetype, search, replace, no = -1):
 def updateindex(path, title, description, tags, projects):
 	replacetext = '\n	{\n		path: "' + path + '",\n		title: "' + title + '",\n		description: "' + description + '",\n		tags: [' + tags + '],\n		projects: [' + projects + ']\n	},'
 
-	with open("./*site/script.js", "r") as file:
+	with open("./site/script.js", "r") as file:
 		data = file.read()
 		data = data.replace("const postsArray = [", "const postsArray = [" + replacetext)
 
-	with open("./*site/script.js", "w") as file:
+	with open("./site/script.js", "w") as file:
 		file.write(data)
 
 	print("File updated.")
@@ -57,9 +54,9 @@ def newpost(title, description, dt):
 
 	file = title.replace(" ", "_")
 
-	path = "./*site/posts/" + dt + "_" + file + ".html"
+	path = "./site/posts/" + dt + "_" + file + ".html"
 
-	with open("./*site/posts/template.html", "r") as f:
+	with open("./site/posts/template.html", "r") as f:
 		data = f.read()
 	
 	data = data.replace("{{YOUR BLOG POST TITLE HERE}}", title)
@@ -74,11 +71,11 @@ def updatepageindex(title, description, display, directory):
 
 	replacetext = '\n	{\n		path: "' + path + '",\n		title: "' + title + '",\n		description: "' + description + '",\n		display: ' + display + ',\n		directory: ' + directory + '\n	},'
 
-	with open("./*site/script.js", "r") as file:
+	with open("./site/script.js", "r") as file:
 		data = file.read()
 		data = data.replace("const pageArray = [", "const pageArray = [" + replacetext)
 
-	with open("./*site/script.js", "w") as file:
+	with open("./site/script.js", "w") as file:
 		file.write(data)
 
 	print("File updated.")
@@ -87,9 +84,9 @@ def updatepageindex(title, description, display, directory):
 def newpage(title, description):
 	file = title.replace(" ", "_")
 
-	path = "./*site/pages/" + file + ".html"
+	path = "./site/pages/" + file + ".html"
 
-	with open("./*site/pages/*blank.html", "r") as f:
+	with open("./site/pages/blank.html", "r") as f:
 		data = f.read()
 		data = data.replace("{{TITLE}}", title)
 		data = data.replace("{{DESCRIPTION}}", description)
@@ -101,7 +98,7 @@ def newpage(title, description):
 def clean(filename, dt):
 	file = filename.replace(" ", "_")
 
-	path = "./*site/posts/" + dt + "_" + file + ".html"
+	path = "./site/posts/" + dt + "_" + file + ".html"
 
 	with open(path, "r") as f:
 		data = f.read()
@@ -123,47 +120,6 @@ def clean(filename, dt):
 	with open(path, "w") as f:
 		f.write(data)
 
-# convert md to html
-def md(filename):
-	formatted = filename.replace(" ", "_")
-	path = "./*markdown/" + formatted + ".md"
-
-	# Open the file for reading and read the input to a temp variable
-	with open(path, 'r') as f:
-		tempMd = f.read()
-
-	title = sub(r"[\s\S]*title: \"([^\"]*)[\s\S]*", r"\1", tempMd)
-	dt = sub(r"[\s\S]*date: ([\d-]*)[\s\S]*", r"\1", tempMd)
-	descr = sub(r"[\s\S]*description: \"([^\"]*)[\s\S]*", r"\1", tempMd)
-	tags = sub(r"[\s\S]*tags: \[([^\]]*)[\s\S]*", r"\1", tempMd)
-	projects = sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", tempMd)
-
-	if dt == "":
-		dt = str(datetime.date.today())
-
-	titleFormatted = dt + "_" + title.replace(" ", "_")
-
-	newPath = "./*site/posts/" +  titleFormatted + ".html"
-
-	tempMd = sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
-
-	tempHtml = markdown.markdown(tempMd, extensions=["footnotes"])
-	
-	newpost(title, descr, dt)
-
-	with open(newPath, 'r') as f:
-		file = f.read()
-		file = file.replace("{{HERE}}", tempHtml)
-		file = file.replace("class=\"footnote-ref\"", "data-toggle=\"tooltip\" title=\"∞\"")
-		file = file.replace("class=\"footnote-backref\"", "data-toggle=\"tooltip\"")
-		file = file.replace("&#8617;", "<sup>^</sup>")
-		file = sub(r"#fn:\d*\">(\d*)</a>", r'#fn:\1">[\1]</a>', file)
-
-	with open(newPath, "w") as f:
-		f.write(file)
-
-	updateindex(titleFormatted, title, descr, tags, projects)
-
 def rss(title, link, description):
 	nowdt = datetime.datetime.now()
 	nowdt = tz.localize(nowdt)
@@ -177,19 +133,19 @@ def rss(title, link, description):
 
 	lastbuild = "<lastBuildDate>\n\t\t" + date + "\n\t</lastBuildDate>"
 
-	with open('./*site/rss.xml', 'r') as f:
+	with open('./site/rss.xml', 'r') as f:
 		file = f.read()
 		file = sub('<ttl>20000</ttl>', item, file)
 		file = sub('<lastBuildDate>\n\t\t.*\n\t</lastBuildDate>', lastbuild, file)
 
-	with open('./*site/rss.xml', "w") as f:
+	with open('./site/rss.xml', "w") as f:
 		f.write(file)
 
 
 
 # INPUTS
 
-action1 = input("Update RSS feed (1), convert a file (2), add a page (3), or edit posts (4): ")
+action1 = input("Update RSS feed (1), add a page (2), or edit posts (3): ")
 
 if int(action1) == 1:
 	title = input("page title: ")
@@ -203,14 +159,6 @@ if int(action1) == 1:
 	print("RSS feed updated!\n")
 
 elif int(action1) == 2:
-	posttitle = input("post title: ")
-
-	md(posttitle)
-
-	print("\nThe post " + posttitle + " has been converted to HTML.")
-
-
-elif int(action1) == 3:
 	title = input("page title: ")
 	descr = input("page description: ")
 	display = input("display on home page (t/f): ")
@@ -234,7 +182,7 @@ elif int(action1) == 3:
 	print("\nA new post \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
 
 
-elif int(action1) == 4:
+elif int(action1) == 3:
 	action2 = input("Create a new post (1) or a backdated post (2), update the post index (3), create a new file (4), or clean a post (5): ")
 
 	if int(action2) == 1:

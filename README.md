@@ -32,17 +32,17 @@ A JS-based framework for building a site, based on the [Zonelots framework](http
 
 ## Set up
 
-1. Edit anything in double curly brackets in the .html files.
+1. Edit ```{{AUTHOR}}``` to your name/pseudonym in the .html files.
 
-2. Edit the information in section 1 of script.js (the blog name, whether you want header messages on, etc.).
+2. Edit the information in section 1A of script.js (the blog name, whether you want header messages on, etc.).
 
 3. Replace the favicon. If not using a file called favicon.svg, remember to change the file name in your .html pages.
 
 3. Pick a theme and copy/paste it into style.css.
 
-4. Delete the example posts and their data, as well as any unused themes.
+4. Enter your timezone into the variable at the top of functions.py.
 
-5. Add your timezone and the path to the *site file to the functions.py.
+5. Delete the example posts and their data, as well as any unused themes. Add header messages to the messages array if you like.
 
 ## Adding a post/page/RSS feed entry
 
