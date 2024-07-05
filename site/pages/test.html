@@ -9,8 +9,6 @@
 	<link rel="icon" href="/images/favicon.svg" type="image/x-icon" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -21,9 +19,10 @@
 
 		<main id="content">
 			<article>
+
 				<h1>Heading 1</h1>
 				<div class="box">
-					<p>This is a test page.<a data-toggle="tooltip" title="This is a footnote." href="#return1" name="n1" id="n1"><sup>1</sup></a> The source of the Latin text is the Latin Library's edition of Cicero's first Catilinarian Address. The source of the Greek text is some edition of the Batrachomyomachia, idk which.</p>
+					<p>This is a test page.<a class="tooltip" data-text="This is a footnote." href="#return1" name="n1" id="n1"><sup>[1]</sup></a> The source of the Latin text is the Latin Library's edition of Cicero's first Catilinarian Address. The source of the Greek text is some edition of the Batrachomyomachia, idk which.<a class="tooltip" data-text="tooltip text">x</a></p>
 				</div>
 				<p><strong>Quo usque tandem abutere, Catilina, patientia nostra?</strong> quam diu etiam furor iste tuus nos eludet? quem ad finem sese effrenata iactabit audacia? Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae, nihil timor populi, nihil concursus bonorum omnium, nihil hic munitissimus habendi senatus locus, nihil horum ora voltusque moverunt? Patere tua consilia non sentis, constrictam iam horum omnium scientia teneri coniurationem tuam non vides? Quid proxima, quid superiore nocte egeris, ubi fueris, quos convocaveris, quid consilii ceperis, quem nostrum ignorare arbitraris?</p>
 				<h2>Heading 2</h2>
@@ -39,15 +38,15 @@
 					<figcaption>This is an image with alt text and a caption.</figcaption>
 				</figure>
 				<h6>Heading 6</h6>
-				<a href="https://www.wikipedia.org">
-					<div class="bookmark">
+				<div class="bookmark">
+					<a href="https://www.wikipedia.org">
 						<div class="bookmark-head">
 							<div class="bookmark-title">Wikipedia</div>
 							<div class="bookmark-description">The free encyclopaedia.</div>
 						</div>
-						<div class="bookmark-foot">wikipdeia.org</div>
-					</div>
-				</a>
+						<div class="bookmark-foot">wikipedia.org</div>
+					</a>
+				</div>
 				<p>Quamdiu quisquam erit, qui te defendere audeat, vives, et vives ita, ut [nunc] vivis, multis meis et firmis praesidiis obsessus, ne commovere te contra rem publicam possis. Multorum te etiam oculi et aures non sentientem, sicut adhuc fecerunt, speculabuntur atque custodient. Etenim quid est, Catilina, quod iam amplius expectes, si neque nox tenebris obscurare coetus nefarios nec privata domus parietibus continere voces coniurationis tuae potest, si illustrantur, si erumpunt omnia? Muta iam istam mentem, mihi crede, obliviscere caedis atque incendiorum. Teneris undique; luce sunt clariora nobis tua consilia omnia; quae iam mecum licet recognoscas. </p>
 				<p>Meministine me ante diem XII Kalendas Novembris dicere in senatu fore in armis certo die, qui dies futurus esset ante diem VI Kal. Novembris, C. Manlium, audaciae satellitem atque administrum tuae? Num me fefellit, Catilina, non modo res tanta, tam atrox tamque incredibilis, verum, id quod multo magis est admirandum, dies? Dixi ego idem in senatu caedem te optumatium contulisse in ante diem V Kalendas Novembris, tum cum multi principes civitatis Roma non tam sui conservandi quam tuorum consiliorum reprimendorum causa profugerunt. Num infitiari potes te illo ipso die meis praesidiis, mea diligentia circumclusum commovere te contra rem publicam non potuisse, cum tu discessu ceterorum nostra tamen, qui remansissemus, caede te contentum esse dicebas?</p>
 
@@ -85,17 +84,30 @@
 					<summary>Gallia est omnis divisa in partes tres...</summary>
 					...quarum unum incolunt Belgae, aliam Aquitani, tertiam qui ipsorum lingua Celtae, nostra Galli apellantur.
 				</details>
-				<h2>column and table test</h2>
+				<h2>column and card test</h2>
 				<div class="grid-container">
 					<div>
+						<div class="box">
+							<p>This is a sample box.</p>
+						</div>
 						<div class="card">
 							<h3 class="title">title</h3>
 							<p>This is a sample card.</p>
 						</div>
+						<div class="callout">
+							<div class="icon"><svg width="24" height="24" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+							<div class="text">
+								<p>This is a sample callout.</p>
+							</div>
+						</div>
 					</div>
 					<div>
-						<div class="box">
-							<p>This is a sample box.</p>
+						<div class="swatches" style="--col-no: 5;">
+							<span class="swatch" style="background-color: rgb(var(--red));">red</span>
+							<span class="swatch" style="background-color: rgb(var(--orange));">orange</span>
+							<span class="swatch" style="background-color: rgb(var(--yellow));">yellow</span>
+							<span class="swatch" style="background-color: rgb(var(--green));">green</span>
+							<span class="swatch" style="background-color: rgb(var(--blue));">blue</span>
 						</div>
 					</div>
 				</div>
@@ -166,7 +178,7 @@
 				</table>
 				<hr>
 				<ol>
-					<li>This is a footnote.<a data-toggle="tooltip" title="return to text" href="#n1" name="return1" id="return1">^</a></li>
+					<li>This is a footnote.<a class="tooltip" data-text="return to text" href="#n1" name="return1" id="return1">^</a></li>
 				</ol>
 			</article>
 		</main>
@@ -174,7 +186,7 @@
 		<footer id="footer"></footer>
 	</div> <!-- end of div id="container" -->
 
-	<script>$(document).ready(function () { $('[data-toggle="tooltip"]').tooltip({ placement: "top" }); });</script>
+
 	<script src="/script.js"></script>
 </body>
 
