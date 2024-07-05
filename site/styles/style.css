@@ -1300,13 +1300,13 @@ dl {
 @media (prefers-color-scheme: dark) {
 	:root {
 		/* COLOR VARS */
-		/* palette: https://coolors.co/9854B7-4997D3-61B77A-C8C02A-EFB43E-EB934A-E66E53-D16253 */
+		/* palette: https://coolors.co/f06772-f6a775-fbe379-adcc69-75baef */
 		/* light palette +20 sat +18 bright */
-		--yellow: 239, 180, 62;   /* #EFB43E */
-		--orange: 235, 147, 74;   /* #EB934A */
-		--red: 209, 98, 83;       /* #D16253 */
-		--purple: 152, 84, 183;   /* #9854B7 */
-		--blue: 73, 151, 211;     /* #4997D3 */
+		--red: 240, 103, 114;     /* #F06772 */
+		--orange: 246, 167, 117;  /* #F6A775 */
+		--yellow: 251, 227, 121;  /* #FBE379 */
+		--green: 173, 204, 105;   /* #ADCC69 */
+		--blue: 117, 186, 239;    /* #75BAEF */
 
 		--content-bg: var(--black);
 		--main-text: var(--white);
@@ -1332,11 +1332,11 @@ dl {
 		/* COLOR VARS */
 		/* palette: https://coolors.co/5a356c-2b5e85-44684e-6b681e-ad7912-ae5c19-aa3a20-883a30 */
 		/* light palette +10 sat -25 bright */
-		--yellow: 173, 121, 18;  /* #AD7912 */
-		--orange: 174, 92, 25;   /* #AE5C19 */
-		--red: 136, 58, 48;      /* #883A30 */
-		--purple: 90, 53, 108;   /* #5A356C */
-		--blue: 43, 94, 133;     /* #2B5E85 */
+		--red: 207, 23, 38;       /* #CF1726 */
+		--orange: 230, 100, 19;   /* #E66413 */
+		--yellow: 247, 204, 9;    /* #F7CC09 */
+		--green: 115, 142, 57;    /* #738E39 */
+		--blue: 28, 133, 213;     /* #1C85D5 */
 
 		--content-bg: var(--white);
 		--main-text: var(--black);
