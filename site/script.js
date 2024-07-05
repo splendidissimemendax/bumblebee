@@ -35,11 +35,19 @@ CONTENTS
 	1A. VARIABLES
 ------------------ */
 
-const blogName = "{{BLOG NAME}}";
+const blogName = "Bumblebee";
 const recentPostsCutoff = 5;
 const headerMessageOn = true;
 const linkIntro = "Links:";
-let trekify = false;
+
+let   randomColors = true;
+const colors = [
+	"red",
+	"orange",
+	// "yellow", (too light to be readable)
+	"green",
+	"blue"
+]
 
 /* ------------------
 	1B. MISC
@@ -132,6 +140,13 @@ const pageArray = [
 		path: "about",
 		title: "about",
 		description: "About me.",
+		display: false,
+		directory: false
+	},
+	{
+		path: "test",
+		title: "test",
+		description: "Styles test",
 		display: false,
 		directory: false
 	}
@@ -234,8 +249,11 @@ function formatPageLink(i, pageArray) {
 	let linkText = "";
 	const pageTitle = pageArray[i].title;
 	const pageDescr = pageArray[i].description;
+	let color = colors[Math.floor(Math.random() * colors.length)];
 
-	linkText += '<li><a href="/' + pageArray[i].path + '"><span class="post-title">' + pageTitle + '</span></a> | ';
+	linkText += '<li class="box"';
+	if (randomColors) linkText += 'style="--color: var(--' + color + ')"';
+	linkText += '><a href="/' + pageArray[i].path + '"><span class="post-title">' + pageTitle + '</span></a> | ';
 
 	if (pageDescr && pageDescr.length) linkText += pageDescr;
 
@@ -260,8 +278,11 @@ function formatPostLink(i, postsArray) {
 	const postTitle = postsArray[i].title;
 	const postDescr = postsArray[i].description;
 	const postTags = postsArray[i].tags;
+	let color = colors[Math.floor(Math.random() * colors.length)];
 
-	linkText += '<li class="box"><a href="/' + postsArray[i].path + '">';
+	linkText += '<li class="box"';
+	if (randomColors) linkText += 'style="--color: var(--' + color + ')"';
+	linkText += '><a href="/' + postsArray[i].path + '">';
 
 	linkText += '<span class="post-title">' + postTitle + "</span>";
 	if (postDateFormat.test(postsArray[i].path.slice(6, 17))) linkText += " | " + monthNums2Names[postsArray[i].path.slice(11, 13)] + " " + postsArray[i].path.slice(14, 16) + ", " + postsArray[i].path.slice(6, 10) + '</a>';
@@ -319,24 +340,13 @@ function buildPostIndex(tagType, emptyMessage) {
 	4A. HEADER HTML
 ------------------ */
 
-if (trekify == true) {
-	blog.header.HTML += '<div id="title"><a href="/">' + blogName + '</a></div>';
-
-	blog.header.HTML += '<nav id="main-nav"><ul>' +
-		'<li><a href="/pages/about.html">about</a></li>' +
-		'<li><a href="/pages/">pages</a></li>' +
-		'<li><a href="/posts/">posts</a></li>'+
-		'<li><a href="/rss.xml">feed</a></li>' +
+blog.header.HTML += '<nav id="main-nav"><ul>' +
+	'<li id="title"><a href="/">' + blogName + '</a></li>' +
+	'<li><a href="/pages/about.html">about</a></li>' +
+	'<li><a href="/pages/">pages</a></li>' +
+	'<li><a href="/posts/">posts</a></li>'+
+	'<li><a href="/rss.xml">feed</a></li>' +
 	'</ul></nav>';
-} else {
-	blog.header.HTML += '<nav id="main-nav"><ul>' +
-		'<li id="title"><a href="/">' + blogName + '</a></li>' +
-		'<li><a href="/pages/about.html">about</a></li>' +
-		'<li><a href="/pages/">pages</a></li>' +
-		'<li><a href="/posts/">posts</a></li>'+
-		'<li><a href="/rss.xml">feed</a></li>' +
-	'</ul></nav>';
-}
 
 if (headerMessageOn && messagesArray.length > 0) {
 	let randMessage = messagesArray[Math.floor(Math.random() * messagesArray.length)].quote;
@@ -381,11 +391,7 @@ const projectList = []
 if (currentIndex > -1) {
 	// POST DATE
 	if (postDateFormat.test(postsArray[currentIndex].path.slice(6, 17))) {
-		if (trekify == true) {
-			blog.niceDate.HTML += "Stardate " + postsArray[currentIndex].path.slice(6,10) + postsArray[currentIndex].path.slice(11,13) + "." + postsArray[currentIndex].path.slice(14,16)
-		} else {
-			blog.niceDate.HTML += monthNums2Names[postsArray[currentIndex].path.slice(11, 13)] + " " + postsArray[currentIndex].path.slice(14, 16) + ", " + postsArray[currentIndex].path.slice(6, 10)
-		}
+		blog.niceDate.HTML += monthNums2Names[postsArray[currentIndex].path.slice(11, 13)] + " " + postsArray[currentIndex].path.slice(14, 16) + ", " + postsArray[currentIndex].path.slice(6, 10)
 	}
 
 	document.getElementById("post-date").setAttribute("datetime", postsArray[currentIndex].path.slice(6, 16));
