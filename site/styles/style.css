@@ -19,32 +19,27 @@
 	/* h6 is 1em */
 
 	/* COLOR VARS */
-	/* palette: https://coolors.co/f0a202-d86210-bf211e-6e2a71-1c32c4 */
-	--black:            10, 18, 71;    /* #403F4C */
-	--red:              232, 72, 85;   /* #E84855 */
-	--orange:           241, 146, 89;  /* #F19259 */
-	--yellow:           249, 220, 92;  /* #F9DC5C */
-	--green:            149, 177, 87;  /* #95B157 */
-	--blue:             91, 170, 230;  /* #5BAAE6 */
-	--white:            244, 244, 246; /* #F4F4F6 */
+	/* palette: https://coolors.co/151515-da9100-a68d23-718846-3d8369-087e8b-fdf8ed */
+	--black:            21, 21, 21;    /* #151515 */
+	--yellow:           218, 145, 0;   /* #DA9100 */
+	--green:            166, 141, 35;  /* #A68D23 */
+	--moss:             113, 136, 70;  /* #718846 */
+	--teal:             61, 131, 105;  /* #3D8369 */
+	--blue:             8, 126, 139;   /* #087E8B */
+	--white:            253, 248, 237; /* #FDF8ED */
 
 	/* SECONDARY COLOR VARS */
 	--main-text:        var(--black);
-	--color-card:       var(--red);
-	--color-table:      var(--red);
-	--color-border:     var(--orange);    /* for media borders and hr */
-	--color-code:       var(--orange);    /* for code and highlights */
-	--color-bg:         var(--yellow);
-	--color-nav:        var(--yellow);    /* for header and selection */
-	--color-list:       var(--green);     /* for list markers and detail bgs */
-	--color-tooltips:   var(--green);
-	--color-box:        var(--blue);
-	--color-blockquote: var(--blue);
-	--color-link:       var(--blue);      /* for links, bookmarks, and checkboxes */
+	--color-card:       var(--moss);      /* cards, tables */
+	--color-code:       var(--teal);      /* media borders, hr, code, mark, h1 */
+	--color-nav:        var(--green);     /* header, selection, background, h2 */
+	--color-list:       var(--yellow);    /* list markers, details, boxes, h6 */
+	--color-link:       var(--blue);      /* for links, bookmarks, checkboxes, tooltips, callouts */
 	--content-bg:       var(--white);
 
 	/* OTHER VARS */
 	--border:           0.1rem solid;
+	--bg-image:         url("/images/honeycomb.svg");
 }
 
 /* ANIMATION */
@@ -113,11 +108,14 @@
 }
 
 body {
-	background-color: rgb(var(--color-bg));
+	background-color: rgb(var(--color-nav));
 	color: rgb(var(--main-text));
 	font-family: var(--main-font);
 	font-size: var(--main-size);
 	margin: 0;
+	background-image: var(--bg-image);
+	background-repeat: repeat;
+	background-size: 50vw;
 }
 
 p {
@@ -162,7 +160,7 @@ figure {
 figcaption {
 	text-align: center;
 	font-size: var(--small-size);
-	color: rgb(var(--color-border));
+	color: rgb(var(--color-code));
 	font-style: italic;
 }
 
@@ -196,7 +194,7 @@ h6 {
 h1 {
 	font-size: var(--head1-size);
 	font-weight: var(--bold-weight);
-	color: rgb(var(--orange));
+	color: rgb(var(--color-code));
 	text-align: center;
 	margin-top: .2em;
 }
@@ -205,7 +203,7 @@ h2 {
 	font-size: var(--head2-size);
 	font-weight: var(--bold-weight);
 	text-align: center;
-	background-color: rgb(var(--red));
+	background-color: rgb(var(--color-nav));
 	color: rgb(var(--content-bg));
 	border-radius: .5rem;
 
@@ -242,7 +240,7 @@ h5 {
 h6 {
 	font-size: 1em;
 	font-weight: var(--bold-weight);
-	color: rgb(var(--green));
+	color: rgb(var(--color-list));
 }
 
 mark {
@@ -273,7 +271,7 @@ pre {
 
 /* DECORATIONS */
 .shadow {
-	--color: var(--blue);
+	--color: var(--color-link);
 
 	width: calc(100% - 0.5rem);
 	box-shadow: 0.5em 0.5em 0 0 rgb(var(--color));
@@ -376,7 +374,7 @@ details {
 }
 
 .container:hover input~.checkmark {
-	background-color: rgba(var(--color-nav), 0.15);
+	background-color: rgba(var(--color-nav), 0.3);
 }
 
 .container input:checked~.checkmark {
@@ -407,7 +405,7 @@ details {
 
 /* TABLES */
 table {
-	--color: var(--red);
+	--color: var(--color-card);
 
 	border: var(--border) rgb(var(--color));
 	border-spacing: 0;
@@ -437,8 +435,7 @@ table {
 }
 
 /* BUTTONS */
-button,
-#c_submitButton {
+button {
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
@@ -469,7 +466,7 @@ button,
 
 /* BLOCKQUOTE */
 blockquote {
-	--color: var(--color-blockquote);
+	--color: var(--color-link);
 
 	padding: .5rem .5rem .5rem .75rem;
 	border-left: .5rem solid rgb(var(--color));
@@ -558,7 +555,7 @@ blockquote {
 
 /* BOXES */
 .box {
-	--color: var(--color-box);
+	--color: var(--color-list);
 
 	background-color: rgba(var(--color), 0.15);
 	border-radius: .5rem;
@@ -626,63 +623,6 @@ blockquote {
 	}
 }
 
-/* CALLOUTS */
-.callout {
-	--color: var(--color-box);
-
-	position: relative;
-	margin: 0 0 1.5rem;
-	background: rgba(var(--color), 0.15);
-	border-radius: 0.5rem;
-	display: grid;
-	grid-template-columns: 3rem auto;
-
-
-	svg {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
-
-	.icon {
-		background: rgb(var(--color));
-		color: rgb(var(--content-bg));
-		display: grid;
-		place-items: center;
-		border-radius: 0.5rem 0 0 0.5rem;
-	}
-
-	.text {
-		padding: 1rem;
-
-		*:first-child {
-			margin-top: 0;
-		}
-
-		*:last-child {
-			margin-bottom: 0;
-		}
-	}
-
-	li::marker {
-		color: rgb(var(--color));
-	}
-
-	blockquote {
-		border-color: rgb(var(--color));
-	}
-
-	a {
-		color: rgb(var(--color));
-
-		&:hover {
-			text-decoration: underline wavy 0.08rem rgb(var(--color));
-		}
-	}
-}
-
 /* SWATCHES */
 .swatches {
 	--col-no: 1;
@@ -713,13 +653,6 @@ blockquote {
 		&.light {
 			color: rgb(var(--black));
 		}
-	}
-}
-
-/* RECIPE STYLES */
-.ingredients {
-	li {
-		list-style-type: none;
 	}
 }
 
@@ -777,7 +710,7 @@ blockquote {
 			text-transform: uppercase;
 
 			a {
-				color: rgb(var(--color-link));
+				color: rgb(var(--color-list));
 			}
 		}
 
@@ -804,7 +737,7 @@ blockquote {
 			text-decoration: unset;
 
 			&:hover {
-				background-color: rgba(var(--color-nav), 0.15);
+				background-color: rgba(var(--color-nav), 0.3);
 			}
 		}
 	}
@@ -824,68 +757,12 @@ blockquote {
 			stroke: none;
 			vertical-align: middle;
 			margin-bottom: .2em;
-			fill: rgb(var(--red));
+			fill: rgb(var(--color-card));
 			-webkit-animation: flickerAnimation 2s infinite;
 			-moz-animation: flickerAnimation 2s infinite;
 			-o-animation: flickerAnimation 2s infinite;
 			animation: flickerAnimation 2s infinite;
 		}
-	}
-}
-
-/* SWITCHES */
-#switches {
-	position: sticky;
-	top: 92vh;
-	margin-bottom: -50px;
-	margin-left: 1.5rem;
-
-	--theme-size: 2rem;
-	--theme-count: 3;
-
-	display: grid;
-	grid-template-columns: repeat(var(--theme-count),
-			max(44px, calc(var(--theme-size) / 1.15)));
-
-	padding: 0.08em;
-	font-size: var(--theme-size);
-
-	@media (any-hover: hover) and (any-pointer: fine) {
-		grid-template-columns: repeat(calc(var(--theme-count) + 1),
-				calc(var(--theme-size) / 1.75));
-	}
-
-	@media screen and (max-width:1150px) {
-		position: absolute;
-		top: 0;
-		margin-bottom: 0;
-	}
-
-	.switch {
-		display: block;
-		border: var(--border) rgb(var(--main-text));
-		border-radius: 50%;
-		width: var(--theme-size);
-		height: var(--theme-size);
-		cursor: pointer;
-		transition: transform .2s ease-in-out;
-
-		&:hover~*,
-		&:focus-within~* {
-			transform: translateX(33%);
-		}
-	}
-
-	#switch-1 {
-		background-color: rgb(var(--white));
-	}
-
-	#switch-2 {
-		background-color: rgb(var(--black));
-	}
-
-	#switch-3 {
-		background-image: linear-gradient(to right, rgb(var(--white)) 50%, rgb(var(--black)) 50%);
 	}
 }
 
@@ -904,155 +781,6 @@ blockquote {
 #skip-link:focus {
 	transform: translateY(0%);
 	transition: transform 0.2s ease-in;
-}
-
-/* GUESTBOOK STYLES */
-#c_widget {
-	box-sizing: border-box;
-	height: 100%;
-	padding: 1em 0;
-	background-attachment: fixed;
-	font-family: var(--main-font);
-	color: rgb(var(--main-text));
-	text-align: right;
-}
-
-#c_widget button:disabled,
-#c_widget input[type=submit]:disabled {
-	opacity: 60%;
-}
-
-#c_widget button:disabled:hover,
-#c_widget input[type=submit]:disabled:hover {
-	color: rgb(var(--content-bg));
-	border: var(--border) rgb(var(--content-bg));
-}
-
-/* Input section */
-
-#c_widgetTitle {
-	margin-bottom: 1rem;
-}
-
-.c-inputWrapper {
-	display: block;
-	text-align: left;
-}
-
-#c_nameWrapper {
-	width: 49%;
-	float: left;
-}
-
-#c_websiteWrapper {
-	width: 49%;
-	float: right;
-}
-
-.c-input {
-	padding: .2rem;
-	margin-bottom: .5rem;
-	color: rgb(var(--main-text));
-	border: var(--border) rgb(var(--color-border));
-	outline: none;
-	background-color: transparent;
-	text-align: left;
-	font-family: var(--main-font);
-	width: 100%;
-	border-radius: .5rem;
-	transition: .2s cubic-bezier(0, 0, 0.58, 1);
-}
-
-.c-input:focus {
-	box-shadow: 0.5em 0.5em 0 0 rgb(var(--blue));
-}
-
-.c-textInput {
-	width: 100%;
-	resize: none;
-}
-
-#c_submitButton {
-	display: block;
-	margin-left: auto;
-	margin: .5em 0 3em auto;
-}
-
-#c_replyingText {
-	color: rgb(var(--main-text));
-	float: right;
-}
-
-.c-label {
-	text-transform: uppercase;
-	font-family: var(--head-font);
-	font-weight: var(--bold-weight);
-	display: block;
-	font-size: var(--small-size);
-}
-
-/* Comment section */
-.c-comment {
-	margin-bottom: 15px;
-	padding: 10px;
-	border: var(--border) rgb(var(--blue));
-	text-align: left;
-	border-radius: .5em;
-}
-
-.c-reply {
-	display: block;
-	width: 90%;
-	margin-bottom: 10px;
-	margin-left: auto;
-	margin-right: 0;
-	padding: 10px;
-}
-
-.c-reply:last-child {
-	margin-bottom: 0;
-}
-
-.c-replyContainer {
-	margin: -10px;
-	margin-top: 10px;
-	padding: 10px;
-}
-
-.c-name {
-	display: inline-block;
-	margin: 0;
-	margin-right: .75rem;
-	font-size: var(--main-size);
-}
-
-.c-site {
-	text-transform: lowercase;
-	text-decoration: none;
-}
-
-.c-timestamp {
-	float: right;
-	opacity: 75%;
-}
-
-.c-text {
-	padding: .5rem;
-	color: rgb(var(--main-text));
-	background-color: rgba(var(--red), 0.15);
-	border-radius: .5rem;
-}
-
-/* Pagination */
-#c_pagination {
-	text-align: center;
-}
-
-.c-replyButton,
-.c-expandButton,
-.c-paginationButton {
-	margin-top: 1rem;
-	margin-right: .25rem;
 }
 
 /*POST LIST STYLE*/
@@ -1108,67 +836,6 @@ ul#page-display {
 		}
 	}
 }
-
-/* SHRINES */
-a.shrine,
-a.page { 
-	text-decoration: none;
-	color: rgb(var(--main-text));
-
-	.card {
-		--color: var(--red);
-		transition: all 0.35s ease-in-out;
-
-		&&:hover {
-			background-color: rgb(var(--color));
-			text-decoration: none !important;
-
-			p {
-				color: rgb(var(--content-bg));
-			}
-		}
-	}
-}
-
-/* BUTTONS */
-.buttons {
-	.row {
-		line-height: 10px;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
-	a {
-		transition: transform .2s cubic-bezier(0, 0, 0.58, 1), background .2s cubic-bezier(0, 0, 0.58, 1);
-
-		&:hover,
-		&:focus {
-			transform: translate(0, 0.25em);
-			background-color: transparent;
-		}
-
-		&:active {
-			transform: translate(0, 0.75em);
-		}
-	}
-
-	.button-img,
-	img {
-		display: inline-block;
-		text-align: center;
-		line-height: 31px;
-		width: 88px;
-		height: 31px;
-		background-color: transparent;
-		text-transform: uppercase;
-		font-family: var(--head-font);
-		font-weight: var(--bold-weight);
-		margin: .2rem .5rem;
-		border-radius: 0;
-	}
-}
-
-
 
 /*POST DATE*/
 #post-date {
@@ -1270,7 +937,7 @@ dl {
 	&:before {
 		position: absolute;
 		content: attr(data-text);
-		background: rgb(var(--blue));
+		background: rgb(var(--color-link));
 		color: rgb(var(--content-bg));
 		text-align: left;
 		font-size: var(--small-size);
@@ -1300,16 +967,16 @@ dl {
 @media (prefers-color-scheme: dark) {
 	:root {
 		/* COLOR VARS */
-		/* palette: https://coolors.co/f06772-f6a775-fbe379-adcc69-75baef */
-		/* light palette +20 sat +18 bright */
-		--red: 240, 103, 114;     /* #F06772 */
-		--orange: 246, 167, 117;  /* #F6A775 */
-		--yellow: 251, 227, 121;  /* #FBE379 */
-		--green: 173, 204, 105;   /* #ADCC69 */
-		--blue: 117, 186, 239;    /* #75BAEF */
+		/* palette: https://coolors.co/da9100-a68d23-718846-3d8369-087e8b */
+		/* light palette +20 sat +15 bright */
+		--yellow:     255, 173, 8;   /* #FFAD08 */
+		--green:      211, 179, 34;  /* #D3B322 */
+		--moss:       142, 182, 67;  /* #8EB643 */
+		--teal:       63, 179, 136;  /* #3FB388 */
+		--blue:       9, 175, 193;   /* #09AFC1 */
 
 		--content-bg: var(--black);
-		--main-text: var(--white);
+		--main-text:  var(--white);
 	}
 
 	.tooltip::before {
@@ -1318,7 +985,7 @@ dl {
 
 	.crt {
 		background-color: #222;
-		color: rgb(var(--blue));
+		color: rgb(var(--color-link));
 		background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.18), rgba(0, 255, 0, 0.06), rgba(0, 0, 255, 0.18));
 	}
 }
@@ -1330,16 +997,16 @@ dl {
 		--small-size: 16px;
 
 		/* COLOR VARS */
-		/* palette: https://coolors.co/5a356c-2b5e85-44684e-6b681e-ad7912-ae5c19-aa3a20-883a30 */
+		/* palette: https://coolors.co/a46e00-7e6b17-556a2f-2a6751-05606a */
 		/* light palette +10 sat -25 bright */
-		--red: 207, 23, 38;       /* #CF1726 */
-		--orange: 230, 100, 19;   /* #E66413 */
-		--yellow: 247, 204, 9;    /* #F7CC09 */
-		--green: 115, 142, 57;    /* #738E39 */
-		--blue: 28, 133, 213;     /* #1C85D5 */
+		--yellow:     164, 110, 0;   /* #A46E00 */
+		--green:      126, 107, 23;  /* #7E6B17 */
+		--moss:       85, 106, 47;   /* #556A2F */
+		--teal:       42, 103, 81;   /* #2A6751 */
+		--blue:       5, 96, 106;    /* #05606A */
 
 		--content-bg: var(--white);
-		--main-text: var(--black);
+		--main-text:  var(--black);
 	}
 
 	a {
@@ -1354,10 +1021,5 @@ dl {
 			color: rgb(var(--content-bg));
 			text-decoration: underline .1rem transparent;
 		}
-	}
-
-	.crt {
-		font-family: var(--main-font);
-		font-size: var(--main-size);
 	}
 }
