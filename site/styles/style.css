@@ -950,12 +950,6 @@ dl {
 	.tooltip::before {
 		color: rgb(var(--main-text));
 	}
-
-	.crt {
-		background-color: #222;
-		color: rgb(var(--color-link));
-		background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.18), rgba(0, 255, 0, 0.06), rgba(0, 0, 255, 0.18));
-	}
 }
 
 @media (prefers-contrast: more) {
