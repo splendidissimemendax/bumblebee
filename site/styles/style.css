@@ -935,7 +935,7 @@ dl {
 @media (prefers-color-scheme: dark) {
 	:root {
 		/* COLOR VARS */
-		/* palette: https://coolors.co/da9100-a68d23-718846-3d8369-087e8b */
+		/* palette: https://coolors.co/ffad08-d3b322-8eb643-3fb388-09afc1 */
 		/* light palette +20 sat +15 bright */
 		--yellow:     255, 173, 8;   /* #FFAD08 */
 		--green:      211, 179, 34;  /* #D3B322 */
