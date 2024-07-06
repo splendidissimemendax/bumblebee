@@ -340,7 +340,7 @@ function buildPostIndex(tagType, emptyMessage) {
 	4A. HEADER HTML
 ------------------ */
 
-blog.header.HTML += '<nav id="main-nav"><ul>' +
+blog.header.HTML += '<nav><ul>' +
 	'<li id="title"><a href="/">' + blogName + '</a></li>' +
 	'<li><a href="/pages/about.html">about</a></li>' +
 	'<li><a href="/pages/">pages</a></li>' +
