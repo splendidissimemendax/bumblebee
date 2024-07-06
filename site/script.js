@@ -36,16 +36,16 @@ CONTENTS
 ------------------ */
 
 const blogName = "Bumblebee";
+const linkIntro = "Links:";
 const recentPostsCutoff = 5;
 const headerMessageOn = true;
-const linkIntro = "Links:";
 
 let   randomColors = true;
 const colors = [
-	"red",
-	"orange",
-	// "yellow", (too light to be readable)
+	"yellow",
 	"green",
+	"moss",
+	"teal",
 	"blue"
 ]
 
