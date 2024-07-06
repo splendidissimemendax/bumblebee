@@ -2,6 +2,8 @@
 
 A JS-based framework for building a site, based on the [Zonelots framework](https://codeberg.org/01bbl/Zonelots) (itself based off [Zonelets](https://zonelets.net/), with added tagging functionality). This is primarily a personal project (it's what I use on my own site) and is thus fairly idiosyncratic, but I wanted to make it available in case anyone else might find it useful.
 
+If you want to see how it looks straight out of the box, I have a demo page [here](https://bumblebee-framework.netlify.app/).
+
 ## differences
 
 ### from Zonelets (via Zonelots)
@@ -26,9 +28,9 @@ A JS-based framework for building a site, based on the [Zonelots framework](http
 
 5. **Post navigation**: I removed the nav links at the top of the page.
 
-6. **Themes**: I've written a handful of site themes that utilize the same JS script.
+6. **Updated CSS**: I made everything more elaborate because I simply cannot help myself. Good news: changing colors should be a snap, because it's all set up with variables now.
 
-7. **Trekify**: I've made some adjustments (which can be turned on/off) to the JS for use in my Star Trek site theme.
+7. **Random colors**: I have it set up so that the posts and pages in the respective lists are randomly colored, just because I think it looks nice. You can just turn it off if you don't like it.
 
 ## Set up
 
