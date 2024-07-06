@@ -757,7 +757,7 @@ blockquote {
 			stroke: none;
 			vertical-align: middle;
 			margin-bottom: .2em;
-			fill: rgb(var(--color-card));
+			fill: rgb(var(--color-list));
 			-webkit-animation: flickerAnimation 2s infinite;
 			-moz-animation: flickerAnimation 2s infinite;
 			-o-animation: flickerAnimation 2s infinite;
