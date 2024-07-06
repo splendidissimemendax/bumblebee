@@ -44,59 +44,27 @@
 
 /* ANIMATION */
 @keyframes flickerAnimation {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
+	0% {opacity: 1;}
+	50% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 @-o-keyframes flickerAnimation {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
+	0% {opacity: 1;}
+	50% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 @-moz-keyframes flickerAnimation {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
+	0% {opacity: 1;}
+	50% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 @-webkit-keyframes flickerAnimation {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
+	0% {opacity: 1;}
+	50% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 /*GENERAL*/
@@ -635,14 +603,15 @@ blockquote {
 	border-radius: 0.5rem;
 	margin-bottom: 0.5rem;
 	color: rgb(var(--content-bg));
+	container-type: size;
 
 	.swatch {
 		display: inline;
+		font-family: var(--head-font);
 		text-align: right;
-		vertical-align: 50%;
 		writing-mode: vertical-lr;
-		padding-bottom: 2vh;
-		font-size: var(--small-size);
+		padding-bottom: 3cqh;
+		font-size: calc(20cqw / var(--col-no));
 		text-transform: uppercase;
 		overflow: hidden;
 
@@ -702,7 +671,7 @@ blockquote {
 		margin: 0;
 	}
 
-	#main-nav {
+	nav {
 		#title {
 			font-family: var(--head-font);
 			text-align: left;
@@ -715,7 +684,6 @@ blockquote {
 		}
 
 		ul {
-			list-style-type: none;
 			padding: 0;
 			margin: 0;
 		}
