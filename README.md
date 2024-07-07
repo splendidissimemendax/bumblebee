@@ -32,7 +32,9 @@ If you want to see how it looks straight out of the box, I have a demo page [her
 
 7. **Random colors**: I have it set up so that the posts and pages in the respective lists are randomly colored, just because I think it looks nice. You can just turn it off if you don't like it.
 
-## Set up
+## Instructions
+
+### Set up
 
 1. Edit ```{{AUTHOR}}``` to your name/pseudonym in the .html files.
 
@@ -40,13 +42,11 @@ If you want to see how it looks straight out of the box, I have a demo page [her
 
 3. Replace the favicon. If not using a file called favicon.svg, remember to change the file name in your .html pages.
 
-3. Pick a theme and copy/paste it into style.css.
+3. Enter your timezone into the variable at the top of functions.py.
 
-4. Enter your timezone into the variable at the top of functions.py.
+4. Delete the example posts and their data, as well as any unused themes. Add header messages to the messages array if you like.
 
-5. Delete the example posts and their data, as well as any unused themes. Add header messages to the messages array if you like.
-
-## Adding a post/page/RSS feed entry
+### Adding a post/page/RSS feed entry
 
 1. Run functions.py and select the function you want to perform.
 
