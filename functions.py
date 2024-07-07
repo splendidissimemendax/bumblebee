@@ -1,11 +1,11 @@
 from os import walk
 from os.path import join, splitext
-import datetime
+import pytz
 import zoneinfo
 from re import sub
 from email import utils
 
-tz = zoneinfo.timezone('Etc/GMT+0') # insert timezone here (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+tz = pytz.timezone('UTC') # insert timezone here
 
 # find/replace across files
 def fix(filetype, search, replace, no = -1):
