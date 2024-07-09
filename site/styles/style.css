@@ -303,6 +303,7 @@ details {
 	background-color: rgba(var(--color), 0.15);
 	border-radius: 0.5rem;
 	padding: 0.5rem 0.5rem 0.5rem 1rem;
+	margin: 0.5rem 0;
 
 	summary {
 		cursor: pointer;
