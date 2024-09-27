@@ -78,7 +78,7 @@ const pages = [
 		path: "test",
 		description: "test page for styles",
 		header: true,
-		homePage: true
+		homePage: false
 	}
 ];
 
