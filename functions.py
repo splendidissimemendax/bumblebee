@@ -1,48 +1,21 @@
-from os import walk
-from os.path import join, splitext
 import pytz
 import datetime
+import markdown
 from re import sub
 from email import utils
 
 tz = pytz.timezone('UTC') # insert timezone here
-
-# find/replace across files
-def fix(filetype, search, replace, no = -1):
-
-	onlyfiles = []
-	
-	for root, dirs, files in walk("./site", topdown=False):
-		for name in files:
-			onlyfiles.append(join(root, name))
-
-	type = "." + filetype.lower()
-	list = []
-
-	for f in onlyfiles:
-		ext = splitext(f)[-1].lower()
-
-		if ext == type:
-			with open(f, "r") as file:
-				data = file.read()
-				data = sub(search, replace, data, no)
-			
-			with open(f, "w") as file:
-				file.write(data)
-			
-			list.append(f)
-
-	print(list)
+site = ""
 
 # update post index
 def updateindex(path, title, description, tags, projects):
-	replacetext = '\n	{\n		path: "' + path + '",\n		title: "' + title + '",\n		description: "' + description + '",\n		tags: [' + tags + '],\n		projects: [' + projects + ']\n	},'
+	replacetext = '\n	{\n		title: "' + title + '",\n		path: "' + path + '",\n		description: "' + description + '",\n		tags: [' + tags + '],\n		projects: [' + projects + ']\n	},'
 
-	with open("./site/script.js", "r") as file:
+	with open("./site/assets/scripts/script.js", "r") as file:
 		data = file.read()
-		data = data.replace("const postsArray = [", "const postsArray = [" + replacetext)
+		data = data.replace("const posts = [", "const posts = [" + replacetext)
 
-	with open("./site/script.js", "w") as file:
+	with open("./site/assets/scripts/script.js", "w") as file:
 		file.write(data)
 
 	print("File updated.")
@@ -53,29 +26,31 @@ def newpost(title, description, dt):
 		dt = str(datetime.date.today())
 
 	file = title.replace(" ", "_")
+	file = sub(r"</*em>", "", file)
+	file = sub(r"</*strong>", "", file)
 
 	path = "./site/posts/" + dt + "_" + file + ".html"
 
 	with open("./site/posts/template.html", "r") as f:
 		data = f.read()
 	
-	data = data.replace("{{YOUR BLOG POST TITLE HERE}}", title)
-	data = data.replace("{{YOUR BLOG POST DESCRIPTION HERE}}", description)
+	data = data.replace("{{TITLE}}", title)
+	data = data.replace("{{DESCRIPTION}}", description)
 
 	with open(path, "w") as f:
 		f.write(data)
 
 # update page index
-def updatepageindex(title, description, display, directory):
+def updatepageindex(title, description, header, home):
 	path = title.replace(" ", "_")
 
-	replacetext = '\n	{\n		path: "' + path + '",\n		title: "' + title + '",\n		description: "' + description + '",\n		display: ' + display + ',\n		directory: ' + directory + '\n	},'
+	replacetext = '\n	{\n		title: "' + title + '",\n		path: "' + path + '",\n		description: "' + description + '",\n		header: ' + header +',\n		homePage: ' + home + '\n	},'
 
-	with open("./site/script.js", "r") as file:
+	with open("./site/assets/scripts/script.js", "r") as file:
 		data = file.read()
-		data = data.replace("const pageArray = [", "const pageArray = [" + replacetext)
+		data = data.replace("const pages = [", "const pages = [" + replacetext)
 
-	with open("./site/script.js", "w") as file:
+	with open("./site/assets/scripts/script.js", "w") as file:
 		file.write(data)
 
 	print("File updated.")
@@ -86,7 +61,7 @@ def newpage(title, description):
 
 	path = "./site/pages/" + file + ".html"
 
-	with open("./site/pages/blank.html", "r") as f:
+	with open("./site/template.html", "r") as f:
 		data = f.read()
 		data = data.replace("{{TITLE}}", title)
 		data = data.replace("{{DESCRIPTION}}", description)
@@ -94,31 +69,59 @@ def newpage(title, description):
 	with open(path, "w") as f:
 		f.write(data)
 
-# clean a post
-def clean(filename, dt):
-	file = filename.replace(" ", "_")
+def md(filename):
+	loc = "./markdown/" + filename + ".md"
 
-	path = "./site/posts/" + dt + "_" + file + ".html"
+	# Open the file for reading and read the input to a temp variable
+	with open(loc, 'r') as f:
+		tempMd = f.read()
 
-	with open(path, "r") as f:
-		data = f.read()
+	meta = sub(r"\]\n---\n\n[\s\S]*", "", tempMd)
 
-		# replace i with em
-		data = data.replace("<i>", "<em>")
-		data = data.replace("</i>", "</em>")
+	title = sub(r"[\s\S]*title: \"([^\"]*)[\s\S]*", r"\1", meta)
 
-		# replace b with strong
-		data = data.replace("<b>", "<strong>")
-		data = data.replace("</b>", "</strong>")
+	formatted = title.replace(" ", "_")
+	formatted = formatted.replace("*", "")
 
-		# clear useless stuff
-		data = data.replace(' class="npf_indented\"', "")
-		data = data.replace(' target="_blank"', "")
-		data = data.replace(' rel=\"nofollow\"', "")
-		data = data.replace('https://href.li/?', '')
+	title = sub(r"\*\*\*([^\*]*)\*\*\*", r"<strong><em>\1</em></strong>", title)
+	title = sub(r"\*\*([^\*]*)\*\*", r"<strong>\1</strong>", title)
+	title = sub(r"\*([^\*]*)\*", r"<em>\1</em>", title)
 
-	with open(path, "w") as f:
-		f.write(data)
+	dt = sub(r"[\s\S]*date: ([\d-]*)[\s\S]*", r"\1", meta)
+	descr = sub(r"[\s\S]*description: \"([^\"]*)[\s\S]*", r"\1", meta)
+	tags = sub(r"[\s\S]*tags: \[([^\]]*)[\s\S]*", r"\1", meta)
+	projects = sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", meta)
+
+	if dt == "":
+		dt = str(datetime.date.today())
+
+	formatted = dt + "_" + formatted
+
+	newLoc = "./site/posts/" +  formatted + ".html"
+
+	tempMd = sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
+
+	tempHtml = markdown.markdown(tempMd, extensions=["footnotes", "nl2br", 'tables'])
+	tempHtml = tempHtml.replace("footnote-ref\"", "tooltip\" data-text=\"∞\"")
+	tempHtml = tempHtml.replace("footnote-backref", "tooltip")
+	tempHtml = sub(r"title=\"Jump back to footnote \d* in the text\"", "data-text=\"return to text\"", tempHtml)
+	tempHtml = sub(r"(<li id=\"fn:\d*\">)\n<p>", r"\1", tempHtml)
+	tempHtml = tempHtml.replace("<li><p>", "<li>")
+	tempHtml = sub(r"</p>\n</li>", "</li>", tempHtml)
+	tempHtml = sub(r"#fn:\d*\">(\d*)</a>", r'#fn:\1">[\1]</a>', tempHtml)
+	tempHtml = tempHtml.replace("&#8617;", "<sup>^</sup>")
+	tempHtml = tempHtml.replace("&#160;", "")
+	
+	newpost(title, descr, dt)
+
+	with open(newLoc, 'r') as f:
+		file = f.read()
+		file = file.replace("{{CONTENT}}", tempHtml)
+
+	with open(newLoc, "w") as f:
+		f.write(file)
+
+	updateindex(formatted, title, descr, tags, projects)
 
 def rss(title, link, description):
 	nowdt = datetime.datetime.now()
@@ -145,47 +148,44 @@ def rss(title, link, description):
 
 # INPUTS
 
-action1 = input("Update RSS feed (1), add a page (2), or edit posts (3): ")
+action1 = input("Update RSS feed (1), add a post (2), or add a page (3): ")
 
 if int(action1) == 1:
-	title = input("page title: ")
-	descr = input("page description: ")
-	link = input("link: https://splendide-mendax.com/")
+	action2 = input("Get most recent post (y/n)? ")
 
-	link = "https://splendide-mendax.com/" + link
+	if action2.lower() == "y":
+ 
+		with open('./site/assets/scripts/script.js', 'r') as f:
+			file = f.read()
+			file = sub(r'[\s\S]*const postsArray \= \[\n\t{\n', '', file)
+			file = sub(r'\},[\s\S]*', '', file)
+
+		title = sub(r'[\s\S]*title: "(.*)",[\s\S]*', r'\1', file)
+		descr = sub(r'[\s\S]*description: "(.*)",[\s\S]*', r'\1', file)
+		link = site + sub(r'[\s\S]*path: "(.*)",[\s\S]*', r'\1', file)
+
+	else:
+		title = input("page title: ")
+		descr = input("page description: ")
+
+		link = input("link: " + site)
+		link = site + link
 
 	rss(title, link, descr)
 
 	print("RSS feed updated!\n")
 
 elif int(action1) == 2:
-	title = input("page title: ")
-	descr = input("page description: ")
-	display = input("display on home page (t/f): ")
-	directory = input("directory (t/f): ")
-
-	if display.lower() == "t":
-		display = "true"
-	else:
-		display = "false"
-
-	if directory.lower() == "t":
-		directory = "true"
-	else:
-		directory = "false"
-
-	filename = title.replace(" ", "_")
-
-	newpage(title, descr)
-	updatepageindex(title, descr, display, directory)
-
-	print("\nA new post \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
-
-
-elif int(action1) == 3:
-	action2 = input("Create a new post (1) or a backdated post (2), update the post index (3), create a new file (4), or clean a post (5): ")
+	action2 = input("Create a post from MD (1) or create a blank new (2) or backdated post (3): ")
 
 	if int(action2) == 1:
+		filename = input("file name (no extension): ")
+
+		md(filename)
+
+		print("\nThe file " + filename + ".md has been converted to a post in HTML.")
+
+	elif int(action2) == 2:
 		posttitle = input("post title: ")
 		descr = input("post description: ")
 		posttags = input("tags (in double quotes, comma separated): ")
@@ -200,7 +200,7 @@ elif int(action1) == 3:
 
 		print("\nA new post \"" + posttitle + "\" with the description \"" + descr + "\" and the tags [" + posttags + "] in the project " + postprojects + " has been created.\n")
 
-	elif int(action2) == 2:
+	elif int(action2) == 3:
 		dt = input("date (yyyy-mm-dd): ")
 		posttitle = input("post title: ")
 		descr = input("post description: ")
@@ -215,41 +215,33 @@ elif int(action1) == 3:
 		newpost(posttitle, descr, dt)
 		updateindex(path, posttitle, descr, posttags, postprojects)
 
-		fix("js", today, dt, 1)
-
 		print("\nA new post \"" + posttitle + "\" with the description \"" + descr + "\" and the tags [" + posttags + "] in the project " + postprojects + " dated " + dt + " has been created.\n")
-
-	elif int(action2) == 3:
-		dt = input("date (yyyy-mm-dd): ")
-		posttitle = input("post title: ")
-		descr = input("post description: ")
-		posttags = input("tags (in double quotes, comma separated): ")
-		postprojects = input("projects (in double quotes, comma separated): ")
-
-		filename = dt + "_" + posttitle.replace(" ", "_")
-
-		updateindex(filename, posttitle, descr, posttags, postprojects)
-
-		print("\nThe post \"" + posttitle + "\" (" + filename + ") with the tags [" + posttags + "] in the project " + postprojects + " has been added to the index.\n")
-
-	elif int(action2) == 4:
-		descr = input("post date: ")
-		posttitle = input("post title: ")
-
-		newpost(posttitle, descr)
-
-		print("\nA new post \"" + posttitle + "\" with the description \"" + descr + "\" has been created.\n")
-
-	elif int(action2) == 5:
-		date = input("post date: ")
-		posttitle = input("post title: ")
-
-		clean(posttitle, date)
-
-		print("\n\"" + posttitle + "\" has been cleaned.\n")
 
 	else:
 		print("\nThat wasn't an option. Try again.\n")
+
+elif int(action1) == 3:
+	title = input("page title: ")
+	descr = input("page description: ")
+	header = input("show in header (t/f): ")
+	home = input("show on home page (t/f): ")
+
+	if header.lower() == "t" or "true":
+		header = "true"
+	else:
+		header = "false"
+
+	if home.lower() == "t" or "true":
+		home = "true"
+	else:
+		home = "false"
+
+	filename = title.replace(" ", "_")
+
+	newpage(title, descr)
+	updatepageindex(title, descr, header, home)
+
+	print("\nA new post \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
 
 else:
 	print("\nThat wasn't an option. Try again.\n")
