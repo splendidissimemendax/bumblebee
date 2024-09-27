@@ -102,15 +102,6 @@ def md(filename):
 	tempMd = sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
 
 	tempHtml = markdown.markdown(tempMd, extensions=["footnotes", "nl2br", 'tables'])
-	tempHtml = tempHtml.replace("footnote-ref\"", "tooltip\" data-text=\"∞\"")
-	tempHtml = tempHtml.replace("footnote-backref", "tooltip")
-	tempHtml = sub(r"title=\"Jump back to footnote \d* in the text\"", "data-text=\"return to text\"", tempHtml)
-	tempHtml = sub(r"(<li id=\"fn:\d*\">)\n<p>", r"\1", tempHtml)
-	tempHtml = tempHtml.replace("<li><p>", "<li>")
-	tempHtml = sub(r"</p>\n</li>", "</li>", tempHtml)
-	tempHtml = sub(r"#fn:\d*\">(\d*)</a>", r'#fn:\1">[\1]</a>', tempHtml)
-	tempHtml = tempHtml.replace("&#8617;", "<sup>^</sup>")
-	tempHtml = tempHtml.replace("&#160;", "")
 	
 	newpost(title, descr, dt)
 
