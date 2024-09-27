@@ -18,7 +18,7 @@
 	1A. VARIABLES
 ------------------ */
 const blogName      = "{{BLOG NAME}}";
-const footerMsg     = "© {{YOUR NAME}} {{YEAR}}"
+const footerMsg     = "© {{NAME}} {{YEAR}}"
 const recentPosts   = 5;     // how many posts do you want to show on the home page?
 const themeSwitcher = true;  // do you want to use multiple themes?
 const projNav       = true;  // do you want to include nav links for projects in posts?
