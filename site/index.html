@@ -1,44 +1,38 @@
 <!DOCTYPE html>
-<html lang="en-GB">
-	<head>
-		<meta charset="UTF-8">
-		<title>home</title>
-		<meta name="writer" content="{{AUTHOR}}">
-		<meta name="description" content="Site home">
-		<link rel="icon" href="/images/favicon.svg" type="image/x-icon">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
-	</head>
 
-	<body>
-		<a href="#content" id="skip-link">Skip to main content</a>
+<html>
+<head>
+	<title>home</title>
+	<link rel="icon" href="/assets/images/favicon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="/assets/styles/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="" type="text/css" id="switcher-id">
+	<meta name="writer" content="{{NAME}}">
+	<meta name="description" content="home page">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-		<div id="container">
-			<header id="header">This site requires JavaScript.</header>
+<body>
+	<div id="switcher"></div>
+	
+	<div id="content">
+		<header id="header"></header>
 
-			<main id="content"><article>
+		<main>
+			<h1>home</h1>
 
-				<div class="box">
-					<ul id="page-display" style="margin-top: 0;"></ul>
-				</div>
+			<h2>recommended pages</h2>
 
-				<div class="swatches" style="--col-no: 5;">
-					<span class="swatch" style="background-color: rgb(var(--yellow));">yellow</span>
-					<span class="swatch" style="background-color: rgb(var(--green));">green</span>
-					<span class="swatch" style="background-color: rgb(var(--moss));">moss</span>
-					<span class="swatch" style="background-color: rgb(var(--teal));">teal</span>
-					<span class="swatch" style="background-color: rgb(var(--blue));">blue</span>
-				</div>
+			<div id="reccedPages"></div>
 
-				<h2>Recent Posts</h2>
+			<h2>recent posts</h2>
 
-				<ul id="recent-post-list" class="post-list"></ul>
-			<article></main>
+			<div id="recentPosts" class="postList"></div>
+		</main>
 
-			<footer id="footer"></footer>
-		</div> <!-- end of div id="container" -->
+		<footer id="footer"></footer>
+	</div>
 
-		
-		<script src="/script.js"></script>
-	</body>
+	<script src="/assets/scripts/script.js"></script>
+</body>
 </html>

@@ -1,0 +1,42 @@
+:root {
+	--theme-count: 2;
+}
+
+#switcher {
+	--theme-size: 2rem;
+	
+	position: sticky;
+	top: 92vh;
+	margin-bottom: -50px;
+	margin-left: 1.5rem;
+
+	display: grid;
+	grid-template-columns: repeat(calc(var(--theme-count) + 1), calc(var(--theme-size) / 1.75));
+	padding: 0.08em;
+	font-size: var(--theme-size);
+
+	@media screen and (max-width:1150px) {
+		position: absolute;
+		top: 0;
+		margin-bottom: 0;
+
+		.tooltip::before {
+			bottom: -115%;
+		}
+	}
+
+	.switch {
+		display: block;
+		border: 1px solid black;
+		border-radius: 50%;
+		width: var(--theme-size);
+		height: var(--theme-size);
+		cursor: pointer;
+		transition: transform .2s ease-in-out;
+
+		&:hover~*,
+		&:focus-within~* {
+			transform: translateX(33%);
+		}
+	}
+}

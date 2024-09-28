@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en-GB">
-	<head>
-		<meta charset="UTF-8">
-		<title>posts</title>
-		<meta name="writer" content="{{AUTHOR}}">
-		<meta name="description" content="The full list of posts on my blog.">
-		<link rel="icon" href="/images/favicon.svg" type="image/x-icon"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
-	</head>
 
-	<body>
-		<a href="#content" id="skip-link">Skip to main content</a>
+<html>
+<head>
+	<title>posts</title>
+	<link rel="icon" href="/assets/images/favicon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="/assets/styles/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="" type="text/css" id="switcher-id">
+	<meta name="writer" content="{{NAME}}">
+	<meta name="description" content="posts index">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-		<div id="container">
-			<header id="header">...</header>
+<body>
+	<div id="switcher"></div>
 
-			<main id="content"><article>
-				<h1>Posts</h1>  
-				
-				<p class="box">See posts listed by <a href="/pages/tags.html" class="post-title">tag</a> or <a href="/pages/projects.html" class="post-title">project</a>.</p>
+	<div id="content">
+		<header id="header"></header>
 
-				<ul id="archive-post-list" class="post-list"></ul>
-			<article></main>
+		<main>
+			<h1>posts</h1>
 
-			<footer id="footer"></footer>
-		</div> <!-- end of div id="container" -->
+			<p>See posts listed by <a href="/pages/tags.html">tag</a> or <a href="/pages/projects.html">project</a>.</p>
 
-		
-		<script src="/script.js"></script>
-	</body>
+			<div id="postIndex" class="postList"></div>
+		</main>
+
+		<footer id="footer"></footer>
+	</div>
+
+	<script src="/assets/scripts/script.js"></script>
+</body>
 </html>

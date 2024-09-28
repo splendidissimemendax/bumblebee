@@ -1,38 +1,32 @@
 <!DOCTYPE html>
-<html lang="en-GB">
 
+<html>
 <head>
-	<meta charset="UTF-8">
 	<title>pages</title>
-	<meta name="writer" content="{{AUTHOR}}">
-	<meta name="description" content="a page of pages">
-	<link rel="icon" href="/images/favicon.svg" type="image/x-icon" />
+	<link rel="icon" href="/assets/images/favicon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="/assets/styles/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="" type="text/css" id="switcher-id">
+	<meta name="writer" content="{{NAME}}">
+	<meta name="description" content="pages index">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
 </head>
 
 <body>
-	<a href="#content" id="skip-link">Skip to main content</a>
+	<div id="switcher"></div>
+	
+	<div id="content">
+		<header id="header"></header>
 
-	<div id="container">
-		<header id="header">...</header>
-
-		<main id="content"><article>
+		<main>
 			<h1>pages</h1>
-			
-			<div class="box">
-				<p>Want to read blog posts? Those are <a href="/posts/">here</a>.</p>
-			</div>
 
-			<div id="page-list"></div>
-
-		<article></main>
+			<div id="pageIndex"></div>
+		</main>
 
 		<footer id="footer"></footer>
-	</div> <!-- end of div id="container" -->
+	</div>
 
-	
-	<script src="/script.js"></script>
+	<script src="/assets/scripts/script.js"></script>
 </body>
-
 </html>

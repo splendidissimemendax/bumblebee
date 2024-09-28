@@ -1,35 +1,32 @@
 <!DOCTYPE html>
-<html lang="en-GB">
 
+<html>
 <head>
-	<meta charset="UTF-8">
 	<title>projects</title>
-	<meta name="writer" content="{{AUTHOR}}">
-	<meta name="description" content="The projects index.">
-	<link rel="icon" href="/images/favicon.svg" type="image/x-icon" />
+	<link rel="icon" href="/assets/images/favicon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="/assets/styles/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="" type="text/css" id="switcher-id">
+	<meta name="writer" content="{{NAME}}">
+	<meta name="description" content="projects index">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
 </head>
 
 <body>
-	<a href="#content" id="skip-link">Skip to main content</a>
+	<div id="switcher"></div>
+	
+	<div id="content">
+		<header id="header"></header>
 
-	<div id="container">
-		<header id="header">...</header>
-
-		<main id="content"><article>
+		<main>
 			<h1>projects</h1>
 
-			<h2>index</h2>
-
-			<ul id="project-index" class="index"></ul>
-		<article></main>
+			<div id="projIndex" class="index"></div>
+		</main>
 
 		<footer id="footer"></footer>
-	</div> <!-- end of div id="container" -->
+	</div>
 
-	
-	<script src="/script.js"></script>
+	<script src="/assets/scripts/script.js"></script>
 </body>
-
 </html>

@@ -1,50 +1,60 @@
 # Bumblebee
 
-A JS-based framework for building a site, based on the [Zonelots framework](https://codeberg.org/01bbl/Zonelots) (itself based off [Zonelets](https://zonelets.net/), with added tagging functionality). This is primarily a personal project (it's what I use on my own site) and is thus fairly idiosyncratic, but I wanted to make it available in case anyone else might find it useful.
+A JS-based framework for building a site, strongly inspired by the [Zonelots framework](https://codeberg.org/01bbl/Zonelots) (itself based off [Zonelets](https://zonelets.net/), with added tagging functionality). This is primarily a personal project (it's what I use on my own site) and is thus fairly idiosyncratic, but I wanted to make it available in case anyone else might find it useful.
 
 If you want to see how it looks straight out of the box, I have a demo page [here](https://bumblebee-framework.netlify.app/).
 
-## differences
+## premise
 
-### from Zonelets (via Zonelots)
+I really like Zonelots conceptually, but as I kept using it, I found myself adding things on top piecemeal until it looked a lot like that one [XKCD](https://xkcd.com/2347/), which is to say "messy and a little fragile". Also, it was getting slow—not terribly, but noticeably. 
 
-1. **Tags**: You can tag posts. There's a tag page where you can see all tags and the posts tagged with them. This is run through the JS script, so you only have to update them in one place.
+What I really needed to do was start from scratch, so I did. It's still basically "Zonelots as Bee would do it", but it's hopefully less precarious and somewhat faster.
 
-2. **Header messages**: The script will show a random message from a list. This can be turned on and off.
+The big changes are the additional languages. The Python script removes the need to make manual edits to the JavaScript after the initial setup. Basically, as long as you're happy with the way the site's working (and you don't make any typos), you could never look at the JavaScript script again: just run the Python script from terminal or your IDE, follow the prompts, and upload the whole thing to whatever hosting service you're using. Markdown is very optional, but it removes the need to write posts in HTML and generally makes life a little easier. 
 
-3. **Post navigation**: Includes post titles in the page navigation links.
+The other big change is speed-related. Basically, I've set things up so that if an element doesn't appear on a page, the bits of script associated with building the element won't run. Hopefully this saves a bit of loading time, especially once you've got more posts to process.
 
-### from Zonelots
+Other, more minor changes include:
 
-1. **Update**: The most important feature is that I've fixed the bit of the code that was broken, based on a solution worked out by [strflr](https://strflr.neocities.org/blog/posts/2024-03-24-Zonelots-Fix).
+- building the header from the pages array
 
-2. **Automation**: Basically, you only have to enter the Javascript to do the initial set-up or to backdate a post.
+- (optional) theme switcher
 
-3. **Projects**: Based on the framework of tagging. I personally have a bunch of tags and having a separate system for projects (rather than just using tags) helps me keep things organized.
+- (optional) post navigation within projects
 
-4. **Page Index**: I made an index for static pages that functions a lot like the posts index.
+- (optional) post sorting by date, which removes the need to move backdated posts in the posts array
 
-5. **Message Sources**: All my messages are quotes and I wanted a page that would automatically update with all the quotes in the array and their respective sources, so I built it.
-
-5. **Post navigation**: I removed the nav links at the top of the page.
-
-6. **Updated CSS**: I made everything more elaborate because I simply cannot help myself. Good news: changing colors should be a snap, because it's all set up with variables now.
-
-7. **Random colors**: I have it set up so that the posts and pages in the respective lists are randomly colored, just because I think it looks nice. You can just turn it off if you don't like it.
+- (optional) RSS feed and associated automation
 
 ## Instructions
 
 ### Set up
 
-1. Edit ```{{AUTHOR}}``` to your name/pseudonym in the .html files.
+1. Find and replace the following template phrases across all files:
 
-2. Edit the information in section 1A of script.js (the blog name, whether you want header messages on, etc.).
+	1. `{{NAME}}` to your name/pseudonym (all HTML files, script.js).
+
+	2. `{{BLOG NAME}}` to your blog's name (script.js, rss.xml).
+
+	3. `{{URL}}` to your blog's URL (rss.xml, functions.py).
+
+	4. `{{YEAR}}` to the current year (script.js) (or you could change the footer message entirely—up to you).
+
+	5. `{{EMAIL}}` to your email (if you'd like to show that in the footer—again, you can just change this entirely).
+
+2. Edit the information in section 1A of script.js (the blog name, whether you want the theme switcher, etc.).
 
 3. Replace the favicon. If not using a file called favicon.svg, remember to change the file name in your .html pages.
 
 3. Enter your timezone into the variable at the top of functions.py.
 
-4. Delete the example posts and their data, as well as any unused themes. Add header messages to the messages array if you like.
+4. Delete the example posts, as well as any pages you don't mean to use, and all the data associated with either in script.js. 
+
+5. Check that the header/homepage status of the pages you're keeping is how you'd like it (default shows teh test page in the header and the tags page on the home page).
+
+6. Edit footer links to your preference.
+
+7. Either add additional themes or turn off the theme switcher (current themes are "minimal", which is basically just enough styling to make the site look nice, and "base", which is no styling at all except for the theme switcher itself).
 
 ### Adding a post/page/RSS feed entry
 
@@ -52,4 +62,4 @@ If you want to see how it looks straight out of the box, I have a demo page [her
 
 2. In the terminal, input the requested information in the requested form (e.g. dates are yyyy-mm-dd).
 
-3. If you've backdated a post, you'll have to move that entry in the post index array by hand or posts won't be in date order. Otherwise, you're done.
+3. If you've backdated a post and you've set `sortPosts` to `false`, you'll have to move that entry in the post index by hand or posts won't be in date order. The same is true for any typos you want to fix or any posts you want to delete. Otherwise, you're done!

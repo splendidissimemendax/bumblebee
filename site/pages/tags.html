@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html lang="en-GB">
-	<head>
-		<meta charset="UTF-8">
-		<title>tags</title>
-		<meta name="writer" content="{{AUTHOR}}">
-		<meta name="description" content="An index of tags for the posts in my blog.">
-		<link rel="icon" href="/images/favicon.svg" type="image/x-icon"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="/styles/style.css" rel="stylesheet" type="text/css" media="all">
-	</head>
 
-	<body>
-		<a href="#content" id="skip-link">Skip to main content</a>
+<html>
+<head>
+	<title>tags</title>
+	<link rel="icon" href="/assets/images/favicon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="/assets/styles/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="" type="text/css" id="switcher-id">
+	<meta name="writer" content="{{NAME}}">
+	<meta name="description" content="tags index">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-		<div id="container">
-			<header id="header">...</header>
+<body>
+	<div id="switcher"></div>
+	
+	<div id="content">
+		<header id="header"></header>
 
-			<main id="content"><article>
-				<h1>Tags</h1>
+		<main>
+			<h1>tags</h1>
 
-				<ul id="tag-index" class="index"></ul>
-			<article></main>
+			<div id="tagsIndex" class="index"></div>
+		</main>
 
-			<footer id="footer"></footer>
-		</div> <!-- end of div id="container" -->  
+		<footer id="footer"></footer>
+	</div>
 
-		
-		<script src="/script.js"></script>
-	</body>
+	<script src="/assets/scripts/script.js"></script>
+</body>
 </html>
