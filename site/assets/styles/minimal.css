@@ -47,6 +47,7 @@ ol {
 			flex-flow: row wrap;
 			justify-content: flex-end;
 			margin: 0;
+			padding-left: 0.5rem;
 			list-style-type: none;
 
 			li {
