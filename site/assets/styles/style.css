@@ -1,5 +1,6 @@
 :root {
 	--theme-count: 2;
+	--text: 0, 0, 0;
 }
 
 #switcher {
@@ -27,7 +28,7 @@
 
 	.switch {
 		display: block;
-		border: 1px solid black;
+		border: 1px solid rgb(var(--text));
 		border-radius: 50%;
 		width: var(--theme-size);
 		height: var(--theme-size);
