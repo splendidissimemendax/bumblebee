@@ -105,6 +105,10 @@ const themes = [
 		style: `background-color: white;`
 	},
 	{
+		title: "old school",
+		style: `background-color: lime;`
+	},
+	{
 		title: "none",
 		style: `background-color: black;`
 	},
@@ -232,7 +236,7 @@ header.sort((a, b) => {
 
 // THEME SWITCHER
 if (themeSwitcher) {
-	for (let i in themes) themes[i].path = "/assets/styles/" + themes[i].title + ".css";
+	for (let i in themes) themes[i].path = "/assets/styles/" + themes[i].title.replace(/ /g, "_") + ".css";
 } else {
 	delete elements.themeSwitcher;
 }
