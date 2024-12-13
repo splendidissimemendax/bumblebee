@@ -217,12 +217,12 @@ elif int(action1) == 3:
 	header = input("show in header (t/f): ")
 	home = input("show on home page (t/f): ")
 
-	if header.lower() == "t" or "true":
+	if header.lower() == "t" or header.lower() == "true":
 		header = "true"
 	else:
 		header = "false"
 
-	if home.lower() == "t" or "true":
+	if home.lower() == "t" or home.lower() =="true":
 		home = "true"
 	else:
 		home = "false"
