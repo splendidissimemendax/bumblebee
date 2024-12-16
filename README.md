@@ -50,11 +50,11 @@ Other, more minor changes include:
 
 4. Delete the example posts, as well as any pages you don't mean to use, and all the data associated with either in script.js. 
 
-5. Check that the header/homepage status of the pages you're keeping is how you'd like it (default shows teh test page in the header and the tags page on the home page).
+5. Check that the header/homepage status of the pages you're keeping is how you'd like it (default shows the test page in the header and the tags page on the home page).
 
 6. Edit footer links to your preference.
 
-7. Either add additional themes or turn off the theme switcher (current themes are "minimal", which is basically just enough styling to make the site look nice, and "base", which is no styling at all except for the theme switcher itself).
+7. Either add additional themes or turn off the theme switcher (current themes are "minimal", which is basically just enough styling to make the site look nice; "old school", which is based on a monochrome CRT monitor; and "base", which is no styling at all except for the theme switcher itself).
 
 ### Adding a post/page/RSS feed entry
 
