@@ -22,6 +22,27 @@ def convertDate(datestr):
 
 	return date
 
+def readPage(text):
+	frontmatter = sub(r"---\n([^(---)]*)\n---[\s\S]*", r"\1", text)
+	frontmatter = frontmatter.split("\n")
+
+	page = {}
+	
+	for t in frontmatter:
+		key = sub(r":.*", "", t)
+		val = sub(r"[^:]*: ", "", t)
+
+		if key == "date":
+			val = convertDate(val)
+
+		page[key] = val
+
+	content = sub(r"---\n[^(---)]*\n---\n*", "", text)
+	content = markdown.markdown(content, extensions=["footnotes", "nl2br", 'tables'])
+	page["content"] = content
+
+	return page
+
 # BUILD SITE
 def buildSite():
 
