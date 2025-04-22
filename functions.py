@@ -60,6 +60,10 @@ def buildSite():
 	postHTML = postHTML.replace("{{HEADER}}", headHTML)
 	postHTML = postHTML.replace("{{FOOTER}}", footHTML)
 
+	home = fread("markdown/pages/home.md")
+	page = readPage(home)
+	print(page)
+
 	print("Site built.")
 
 if __name__ == "__main__":
