@@ -1,23 +1,37 @@
-def buildSite(): 
-	print("built")
+import os
 
-# IMPORT TEMPLATES
-with open("./templates/header.html", "r") as f:
-	headHTML = f.read()
+def fread(filename):
+	with open(filename, 'r') as f:
+		return f.read()
 
-with open("./templates/footer.html", "r") as f:
-	footHTML = f.read()
 
-with open("./templates/page.html", "r") as f:
-	pageHTML = f.read()
+def fwrite(filename, text):
+	basedir = os.path.dirname(filename)
 
-# SUB HEADER AND FOOTER
-pageHTML = pageHTML.replace("{{HEADER}}", headHTML)
-pageHTML = pageHTML.replace("{{FOOTER}}", footHTML)
+	if not os.path.isdir(basedir):
+		os.makedirs(basedir)
 
-with open("./templates/page.html", "r") as f:
-	postHTML = f.read()
+	with open(filename, 'w') as f:
+		f.write(text)
 
-# SUB HEADER AND FOOTER
-postHTML = postHTML.replace("{{HEADER}}", headHTML)
-postHTML = postHTML.replace("{{FOOTER}}", footHTML)
+# BUILD SITE
+def buildSite():
+
+	# IMPORT TEMPLATES
+	headHTML = fread("./templates/header.html")
+	footHTML = fread("./templates/footer.html")
+
+	pageHTML = fread("./templates/page.html")
+	postHTML = fread("./templates/page.html")
+
+	# SUB HEADER AND FOOTER
+	pageHTML = pageHTML.replace("{{HEADER}}", headHTML)
+	pageHTML = pageHTML.replace("{{FOOTER}}", footHTML)
+
+	postHTML = postHTML.replace("{{HEADER}}", headHTML)
+	postHTML = postHTML.replace("{{FOOTER}}", footHTML)
+
+	print("Site built.")
+
+if __name__ == "__main__":
+	buildSite()
