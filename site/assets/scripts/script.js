@@ -472,7 +472,7 @@ if (elements.header) {
 	for (i in header) headLinks += `<li><a href="${header[i].path}">${header[i].title}</a></li>`;
 
 	elements.header.html += `<nav>
-		<p><a href="/">${blogName}</a><p>
+		<p><a href="/">${blogName}</a></p>
 		<ul>
 			${headLinks}
 		</ul>
