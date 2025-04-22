@@ -72,13 +72,6 @@ const pages = [
 		description: "posts sorted by tag",
 		header: false,
 		homePage: true
-	},
-	{
-		title: "test",
-		path: "test",
-		description: "test page for styles",
-		header: true,
-		homePage: false
 	}
 ];
 
