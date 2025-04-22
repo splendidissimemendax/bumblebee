@@ -1,9 +1,11 @@
 import os
+from re import sub
+import datetime
+import markdown
 
 def fread(filename):
 	with open(filename, 'r') as f:
 		return f.read()
-
 
 def fwrite(filename, text):
 	basedir = os.path.dirname(filename)
@@ -13,6 +15,12 @@ def fwrite(filename, text):
 
 	with open(filename, 'w') as f:
 		f.write(text)
+
+def convertDate(datestr):
+	date = datetime.datetime.strptime(datestr, '%Y-%m-%d')
+	date = date.strftime('%a, %d %b %Y %H:%M:%S +0000')
+
+	return date
 
 # BUILD SITE
 def buildSite():
