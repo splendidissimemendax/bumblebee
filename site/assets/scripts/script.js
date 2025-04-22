@@ -310,21 +310,21 @@ function formatPostDate(path) {
 
 function formatPostNav(array, index, project = "") {
 	let html = ``;
-	let prev = Number(index - 1);
-	let next = Number(index + 1);
+	let prev = Number(Number(index) + 1);
+	let next = Number(Number(index) - 1);
 
 	let nextHtml = ``;
 	let prevHtml = ``;
 	let projHtml = ``;
 
-	if (prev < 0) {
+	if (prev > array.length - 1) {
 		prevHtml += `first post`;
 	} else {
 		prevHtml += `<a href="${array[prev].path}">← previous post</a>
 		<p>${array[prev].title}</p>`
 	}
 
-	if (next > array.length - 1) {
+	if (next < 0) {
 		nextHtml += `last post`;
 	} else {
 		nextHtml += `<a href="${array[next].path}">next post →</a>
