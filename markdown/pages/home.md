@@ -1,6 +1,6 @@
 ---
 title: Home
-location: /
+location: index
 description: Home page for {{BLOG NAME}}
 ---
 
