@@ -2,6 +2,9 @@ import os
 from re import sub
 import datetime
 import markdown
+import time
+
+start_time = time.time()
 
 def fread(filename):
 	with open(filename, 'r') as f:
@@ -48,6 +51,7 @@ def buildSite():
 	# IMPORT TEMPLATES
 	headHTML = fread("./templates/header.html")
 	footHTML = fread("./templates/footer.html")
+	metaHTML = fread("./templates/meta.html")
 
 	pageHTML = fread("./templates/page.html")
 	postHTML = fread("./templates/post.html")
@@ -73,10 +77,10 @@ def buildSite():
 		page = page.replace("{{DESCRIPTION}}", meta["description"])
 		page = page.replace("{{TITLE}}", meta["title"])
 
-		if "location" in meta:
+		if "location" in meta and meta["location"]:
 			pass
 		else:
-			meta["location"] = meta["date"] + "_" + meta["title"].replace(" ", "_").lower()
+			meta["location"] = "pages/" + meta["title"].replace(" ", "_").lower()
 
 		pageMeta.append(meta)
 		
@@ -90,23 +94,48 @@ def buildSite():
 		file = fread("markdown/posts/" + i)
 		meta = readPage(file)
 
-		content = meta.pop("content")
+		if "location" in meta and meta["location"]:
+			pass
+		else:
+			meta["location"] = "posts/" + meta["date"] + "_" + meta["title"].replace(" ", "_").lower()
 
+		postMeta.append(meta)
+
+	postMeta = sorted(postMeta, key=lambda x: x["date"])
+
+	for i, post in enumerate(postMeta):
+		content = post.pop("content")
+
+		# GENERATE META
+		html = ""
+		prev = i - 1;
+		next = i + 1
+
+		prevHTML = ""
+		nextHTML = ""
+		projHTML = ""
+
+		if prev < 0:
+			prevHTML += "First post"
+		else:
+			prevHTML += '<a href="' + postMeta[prev]["location"] + '">← previous post</a>'
+			prevHTML += '<p>' + postMeta[prev]["title"] + '</p>'
+
+		if next >= len(postMeta):
+			nextHTML += "Last post"
+		else: 
+			nextHTML += '<a href="' + postMeta[next]["location"] + '">next post →</a>'
+			nextHTML += '<p>' + postMeta[next]["title"] + '</p>'
+
+		# SUB IN
 		post = postHTML.replace("{{CONTENT}}", content)
 		post = post.replace("{{DESCRIPTION}}", meta["description"])
 		post = post.replace("{{TITLE}}", meta["title"])
 		post = post.replace("{{DATE}}", convertDate(meta["date"]))
-
-		if "location" in meta:
-			pass
-		else:
-			meta["location"] = meta["date"] + "_" + meta["title"].replace(" ", "_").lower()
-
-		postMeta.append(meta)
 		
-		fwrite("site/posts/" + meta["location"] + ".html", post)
-
-	print("Site built.")
+		fwrite("site/" + meta["location"] + ".html", post)
 
 if __name__ == "__main__":
 	buildSite()
+
+	print("\nSite built in %s seconds.\n" % round(time.time() - start_time, 2))
