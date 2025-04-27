@@ -1,22 +1,32 @@
 import pytz
 import datetime
 import markdown
-from re import sub
+import re
 from email import utils
 
 tz = pytz.timezone('UTC') # insert timezone here
 site = ""
 
+def fread(path):
+	with open(path, "r") as f:
+		return f.read()
+	
+def fwrite(path, text):
+	with open(path, "w") as f:
+		f.write(text)
+
 # update post index
 def updateindex(path, title, description, tags, projects):
-	replacetext = '\n	{\n		title: "' + title + '",\n		path: "' + path + '",\n		description: "' + description + '",\n		tags: [' + tags + '],\n		projects: [' + projects + ']\n	},'
+	replacetext = '\n	{\n		title: "'+ title 
+	replacetext += '",\n		path: "' + path 
+	replacetext += '",\n		description: "' + description 
+	replacetext += '",\n		tags: [' + tags 
+	replacetext += '],\n		projects: [' + projects + ']\n	},'
 
-	with open("./site/assets/scripts/script.js", "r") as file:
-		data = file.read()
-		data = data.replace("const posts = [", "const posts = [" + replacetext)
+	data = fread("./site/assets/scripts/script.js")
+	data = data.replace("const posts = [", "const posts = [" + replacetext)
 
-	with open("./site/assets/scripts/script.js", "w") as file:
-		file.write(data)
+	fwrite("./site/assets/scripts/script.js", data)
 
 	print("File updated.")
 
@@ -25,33 +35,28 @@ def newpost(title, description, dt):
 	if dt == "":
 		dt = str(datetime.date.today())
 
-	file = title.replace(" ", "_")
-	file = sub(r"</*em>", "", file)
-	file = sub(r"</*strong>", "", file)
+	file = title.replace(" ", "_").replace("?", "")
+	file = re.sub(r"</*em>", "", file)
+	file = re.sub(r"</*strong>", "", file)
 
 	path = "./site/posts/" + dt + "_" + file + ".html"
 
-	with open("./site/posts/template.html", "r") as f:
-		data = f.read()
-	
+	data = fread("./site/posts/template.html")
 	data = data.replace("{{TITLE}}", title)
 	data = data.replace("{{DESCRIPTION}}", description)
 
-	with open(path, "w") as f:
-		f.write(data)
+	fwrite(path, data)
 
 # update page index
 def updatepageindex(title, description, header, home):
-	path = title.replace(" ", "_")
+	path = title.replace(" ", "_").replace("?", "")
 
 	replacetext = '\n	{\n		title: "' + title + '",\n		path: "' + path + '",\n		description: "' + description + '",\n		header: ' + header +',\n		homePage: ' + home + '\n	},'
 
-	with open("./site/assets/scripts/script.js", "r") as file:
-		data = file.read()
-		data = data.replace("const pages = [", "const pages = [" + replacetext)
+	data = fread("./site/assets/scripts/script.js")
+	data = data.replace("const pages = [", "const pages = [" + replacetext)
 
-	with open("./site/assets/scripts/script.js", "w") as file:
-		file.write(data)
+	fwrite("./site/assets/scripts/script.js", data)
 
 	print("File updated.")
 
@@ -61,56 +66,50 @@ def newpage(title, description):
 
 	path = "./site/pages/" + file + ".html"
 
-	with open("./site/template.html", "r") as f:
-		data = f.read()
-		data = data.replace("{{TITLE}}", title)
-		data = data.replace("{{DESCRIPTION}}", description)
+	data = fread("./site/template.html")
+	data = data.replace("{{TITLE}}", title)
+	data = data.replace("{{DESCRIPTION}}", description)
 
-	with open(path, "w") as f:
-		f.write(data)
+	fwrite(path, data)
 
 def md(filename):
-	loc = "./markdown/" + filename + ".md"
+	path = "./markdown/" + filename + ".md"
 
 	# Open the file for reading and read the input to a temp variable
-	with open(loc, 'r') as f:
-		tempMd = f.read()
+	tempMd = fread(path)
 
-	meta = sub(r"\]\n---\n\n[\s\S]*", "", tempMd)
+	meta = re.sub(r"\]\n---\n\n[\s\S]*", "", tempMd)
 
-	title = sub(r"[\s\S]*title: \"([^\"]*)[\s\S]*", r"\1", meta)
+	title = re.sub(r"[\s\S]*title: \"([^\"]*)[\s\S]*", r"\1", meta)
 
-	formatted = title.replace(" ", "_")
+	formatted = title.replace(" ", "_").replace("?", "")
 	formatted = formatted.replace("*", "")
 
-	title = sub(r"\*\*\*([^\*]*)\*\*\*", r"<strong><em>\1</em></strong>", title)
-	title = sub(r"\*\*([^\*]*)\*\*", r"<strong>\1</strong>", title)
-	title = sub(r"\*([^\*]*)\*", r"<em>\1</em>", title)
+	title = re.sub(r"\*\*\*([^\*]*)\*\*\*", r"<strong><em>\1</em></strong>", title)
+	title = re.sub(r"\*\*([^\*]*)\*\*", r"<strong>\1</strong>", title)
+	title = re.sub(r"\*([^\*]*)\*", r"<em>\1</em>", title)
 
-	dt = sub(r"[\s\S]*date: ([\d-]*)[\s\S]*", r"\1", meta)
-	descr = sub(r"[\s\S]*description: \"([^\"]*)[\s\S]*", r"\1", meta)
-	tags = sub(r"[\s\S]*tags: \[([^\]]*)[\s\S]*", r"\1", meta)
-	projects = sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", meta)
+	dt = re.sub(r"[\s\S]*date: ([\d-]*)[\s\S]*", r"\1", meta)
+	descr = re.sub(r"[\s\S]*description: \"([^\"]*)[\s\S]*", r"\1", meta)
+	tags = re.sub(r"[\s\S]*tags: \[([^\]]*)[\s\S]*", r"\1", meta)
+	projects = re.sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", meta)
 
 	if dt == "":
 		dt = str(datetime.date.today())
 
 	formatted = dt + "_" + formatted
 
-	newLoc = "./site/posts/" +  formatted + ".html"
+	path = "./site/posts/" +  formatted + ".html"
 
-	tempMd = sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
+	tempMd = re.sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
 
 	tempHtml = markdown.markdown(tempMd, extensions=["footnotes", "nl2br", 'tables'])
 	
 	newpost(title, descr, dt)
 
-	with open(newLoc, 'r') as f:
-		file = f.read()
-		file = file.replace("{{CONTENT}}", tempHtml)
+	file = fread(path).replace("{{CONTENT}}", tempHtml)
 
-	with open(newLoc, "w") as f:
-		f.write(file)
+	fwrite(path, file)
 
 	updateindex(formatted, title, descr, tags, projects)
 
@@ -127,13 +126,11 @@ def rss(title, link, description):
 
 	lastbuild = "<lastBuildDate>\n\t\t" + date + "\n\t</lastBuildDate>"
 
-	with open('./site/rss.xml', 'r') as f:
-		file = f.read()
-		file = sub('<ttl>20000</ttl>', item, file)
-		file = sub('<lastBuildDate>\n\t\t.*\n\t</lastBuildDate>', lastbuild, file)
+	file = fread('./site/rss.xml')
+	file = file.replace('<ttl>20000</ttl>', item)
+	file = re.sub(r'<lastBuildDate>\n\t\t.*\n\t</lastBuildDate>', lastbuild, file)
 
-	with open('./site/rss.xml', "w") as f:
-		f.write(file)
+	fwrite('./site/rss.xml', file)
 
 
 
@@ -145,15 +142,14 @@ if int(action1) == 1:
 	action2 = input("Get most recent post (y/n)? ")
 
 	if action2.lower() == "y":
- 
-		with open('./site/assets/scripts/script.js', 'r') as f:
-			file = f.read()
-			file = sub(r'[\s\S]*const postsArray \= \[\n\t{\n', '', file)
-			file = sub(r'\},[\s\S]*', '', file)
+		file = fread('./site/assets/scripts/script.js')
 
-		title = sub(r'[\s\S]*title: "(.*)",[\s\S]*', r'\1', file)
-		descr = sub(r'[\s\S]*description: "(.*)",[\s\S]*', r'\1', file)
-		link = site + sub(r'[\s\S]*path: "(.*)",[\s\S]*', r'\1', file)
+		meta = re.search(r'const posts = \[\n\t\{\n[^{]*\}', file)
+		meta = meta.group()
+
+		title = re.sub(r'[\s\S]*title: "(.*)",[\s\S]*', r'\1', meta)
+		descr = re.sub(r'[\s\S]*description: "(.*)",[\s\S]*', r'\1', meta)
+		link = site + re.sub(r'[\s\S]*path: "(.*)",[\s\S]*', r'\1', meta)
 
 	else:
 		title = input("page title: ")
