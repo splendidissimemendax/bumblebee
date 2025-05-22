@@ -105,10 +105,6 @@ const themes = [
 		style: `background-color: white;`
 	},
 	{
-		title: "old school",
-		style: `background-color: lime;`
-	},
-	{
 		title: "none",
 		style: `background-color: black;`
 	},
