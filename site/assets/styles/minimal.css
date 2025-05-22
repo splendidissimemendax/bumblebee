@@ -31,6 +31,16 @@ ol {
 	}
 }
 
+table {
+	border: var(--border);
+	border-collapse: collapse;
+
+	th, td {
+		border: var(--border);
+		padding: 0.2em 0.5em;
+	}
+}
+
 #header {
 	nav {
 		font-size: 1.2em;
