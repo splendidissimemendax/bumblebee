@@ -34,6 +34,7 @@ ol {
 table {
 	border: var(--border);
 	border-collapse: collapse;
+	margin-inline: auto;
 
 	th, td {
 		border: var(--border);
