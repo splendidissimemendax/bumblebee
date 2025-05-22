@@ -228,7 +228,7 @@ elif int(action1) == 3:
 	newpage(title, descr)
 	updatepageindex(title, descr, header, home)
 
-	print("\nA new post \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
+	print("\nA new page \"" + title + "\" with the description \"" + descr + "\" has been created.\n")
 
 else:
 	print("\nThat wasn't an option. Try again.\n")
