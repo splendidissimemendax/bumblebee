@@ -13,10 +13,6 @@ body {
 	line-height: 1.5;
 }
 
-::selection {
-	background-color: rgba(var(--highlight));
-}
-
 h1,
 h2,
 h3,
