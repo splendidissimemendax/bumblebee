@@ -56,6 +56,13 @@ ol {
 	}
 }
 
+mark {
+	text-shadow: none;
+	color: rgb(var(--bg));
+	background-color: rgb(var(--text));
+	filter: blur(0.03em);
+}
+
 #header {
 	nav {
 		font-size: 1.2em;
