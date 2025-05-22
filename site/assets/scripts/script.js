@@ -60,6 +60,13 @@ const posts = [
 // PAGES
 const pages = [
 	{
+		title: "other themes",
+		path: "other_themes",
+		description: "more than would fit in the theme switcher",
+		header: false,
+		homePage: true
+	},
+	{
 		title: "projects",
 		path: "projects",
 		description: "posts sorted by project",
