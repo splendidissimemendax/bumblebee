@@ -56,6 +56,11 @@ ol {
 	}
 }
 
+hr {
+	border: none;
+	border-top: var(--border);
+}
+
 table {
 	border: var(--border);
 	border-collapse: collapse;
