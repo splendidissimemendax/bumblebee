@@ -44,6 +44,7 @@ def newpost(title, description, dt):
 	data = fread("./site/posts/template.html")
 	data = data.replace("{{TITLE}}", title)
 	data = data.replace("{{DESCRIPTION}}", description)
+	data = data.replace("{{URL}}", "posts/" + dt + "_" + file.lower() + ".html")
 
 	fwrite(path, data)
 
@@ -69,6 +70,7 @@ def newpage(title, description):
 	data = fread("./site/template.html")
 	data = data.replace("{{TITLE}}", title)
 	data = data.replace("{{DESCRIPTION}}", description)
+	data = data.replace("{{URL}}", "pages/" + file.lower() + ".html")
 
 	fwrite(path, data)
 
