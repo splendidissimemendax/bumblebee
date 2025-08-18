@@ -5,12 +5,12 @@
 
 	--accent-color: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
 	--accent: from var(--accent-color) r g b;
-
-	--text: hsl(var(--accent-h), calc(var(--accent-s) / 3), 20%);
-	--text-muted: hsl(var(--accent-h), calc(var(--accent-s) / 3), 60%);
-	--text-faint: hsl(var(--accent-h), calc(var(--accent-s) / 3), 75%);
-	--bg: hsl(var(--accent-h), calc(var(--accent-s) / 3), 98%);
-	--highlight: var(--accent) / 0.1;
+	
+	--text: hsl(var(--accent-h), calc(var(--accent-s) / 3), 80%);
+	--text-muted: hsl(var(--accent-h), calc(var(--accent-s) / 3), 40%);
+	--text-faint: hsl(var(--accent-h), calc(var(--accent-s) / 3), 25%);
+	--bg: hsl(var(--accent-h), calc(var(--accent-s) / 3), 8%);
+	--highlight: var(--accent) / 0.2;
 
 	--font: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
 	--font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
