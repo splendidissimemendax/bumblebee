@@ -2,6 +2,7 @@ import pytz
 import datetime
 import markdown
 import re
+import os
 from email import utils
 
 tz = pytz.timezone('UTC') # insert timezone here
@@ -33,19 +34,20 @@ def updateindex(path, title, description, tags, projects):
 # create a new post
 def newpost(title, description, dt):
 	if dt == "":
-		dt = str(datetime.date.today())
+		dt = str(datetime.date.today()).replace("-", "/")
 
 	file = title.replace(" ", "_").replace("?", "")
 	file = re.sub(r"</*em>", "", file)
 	file = re.sub(r"</*strong>", "", file)
 
-	path = "./site/posts/" + dt + "_" + file + ".html"
+	path = "./site/posts/" + dt + "/" + file + "/index.html"
 
 	data = fread("./site/posts/template.html")
 	data = data.replace("{{TITLE}}", title)
 	data = data.replace("{{DESCRIPTION}}", description)
-	data = data.replace("{{URL}}", "posts/" + dt + "_" + file.lower() + ".html")
+	data = data.replace("{{URL}}", "posts/" + dt + "/" + file.lower() + "/")
 
+	os.makedirs(os.path.dirname(path), exist_ok=True)
 	fwrite(path, data)
 
 # update page index
@@ -65,13 +67,14 @@ def updatepageindex(title, description, header, home):
 def newpage(title, description):
 	file = title.replace(" ", "_")
 
-	path = "./site/pages/" + file + ".html"
+	path = "./site/pages/" + file + "/index.html"
 
 	data = fread("./site/template.html")
 	data = data.replace("{{TITLE}}", title)
 	data = data.replace("{{DESCRIPTION}}", description)
-	data = data.replace("{{URL}}", "pages/" + file.lower() + ".html")
+	data = data.replace("{{URL}}", "pages/" + file.lower() + "/index.html")
 
+	os.makedirs(os.path.dirname(path), exist_ok=True)
 	fwrite(path, data)
 
 def md(filename):
@@ -97,11 +100,11 @@ def md(filename):
 	projects = re.sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", meta)
 
 	if dt == "":
-		dt = str(datetime.date.today())
+		dt = str(datetime.date.today()).replace("-", "/")
 
-	formatted = dt + "_" + formatted
+	formatted = dt + "/" + formatted
 
-	path = "./site/posts/" +  formatted + ".html"
+	path = "./site/posts/" +  formatted + "/index.html"
 
 	tempMd = re.sub(r"[\s\S]*\]\n---\n\n", "", tempMd)
 
@@ -111,6 +114,7 @@ def md(filename):
 
 	file = fread(path).replace("{{CONTENT}}", tempHtml)
 
+	os.makedirs(os.path.dirname(path), exist_ok=True)
 	fwrite(path, file)
 
 	updateindex(formatted, title, descr, tags, projects)

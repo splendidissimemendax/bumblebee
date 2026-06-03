@@ -36,21 +36,21 @@ const hasRss        = true;  // do you have an rss feed
 const posts = [
 	{
 		title: "sample",
-		path: "2024-09-24_sample",
+		path: "2024/09/24/sample",
 		description: "the third of three posts",
 		tags: ["tag a"],
 		projects: ["project a"]
 	},
 	{
 		title: "example",
-		path: "2024-09-23_example",
+		path: "2024/09/23/example",
 		description: "the second of three posts",
 		tags: ["tag a", "tag b"],
 		projects: []
 	},
 	{
 		title: "archetype",
-		path: "2024-09-22_archetype",
+		path: "2024/09/22/archetype",
 		description: "the first of three posts",
 		tags: ["tag b"],
 		projects: ["project a"]
@@ -168,7 +168,7 @@ if (sortPosts) {
 	});
 }
 
-for (let i in posts) posts[i].path = "/posts/" + posts[i].path + ".html";
+for (let i in posts) posts[i].path = "/posts/" + posts[i].path + "/";
 
 // establish if current page is a post
 const url = window.location.pathname;
@@ -176,10 +176,6 @@ let index = -1;
 
 if (url.includes('/posts/')) {
 	let file = url.substring(url.lastIndexOf('/posts/'));
-	
-	if (!file.endsWith(".html")) {
-		file += ".html";
-	}
 	
 	for (let i = 0; i < posts.length; i++) {
 		if (posts[i].path === file) {
@@ -190,7 +186,7 @@ if (url.includes('/posts/')) {
 }
 
 // PAGES
-for (let i in pages) pages[i].path = "/pages/" + pages[i].path + ".html";
+for (let i in pages) pages[i].path = "/pages/" + pages[i].path + "/";
 
 pages.sort((a, b) => {
 	const titleA = a.title.toLowerCase();
@@ -241,7 +237,7 @@ if (themeSwitcher) {
 /* ------------------
 	3C. MISC
 ------------------ */
-const dateFormat = /\d{4}\-\d{2}\-\d{2}\_/;
+const dateFormat = /\d{4}\/\d{2}\/\d{2}\//;
 
 const months = {
 	"01": "January",
@@ -273,13 +269,13 @@ function formatPostTags(post) {
 			data += `<dl>`
 			if (post.tags.length) {
 				data += `<dt>tags</dt><dd><ul>`;
-				for (let i in post.tags) data += `<li><a href="/pages/tags.html#${post.tags[i].replace(/\s/, "-")}">#${post.tags[i]}</a></li>`;
+				for (let i in post.tags) data += `<li><a href="/pages/tags/#${post.tags[i].replace(/\s/, "-")}">#${post.tags[i]}</a></li>`;
 				data += `</ul></dd>`;
 			}
 	
 			if (post.projects.length) {
 				data += `<dt>projects</dt><dd><ul>`;
-				for (let i in post.projects) data += `<li><a href="/pages/projects.html#${post.projects[i].replace(/\s/, "-")}">${post.projects[i]}</a></li>`;
+				for (let i in post.projects) data += `<li><a href="/pages/projects/#${post.projects[i].replace(/\s/, "-")}">${post.projects[i]}</a></li>`;
 				data += `</ul></dd>`;
 			}
 			data += `</dl>`
@@ -328,7 +324,7 @@ function formatPostNav(array, index, project = "") {
 	}
 
 	if (project != "") {
-		projHtml += `<a href="/pages/projects.html#${project.replace(/\s/, "-")}">${project}</a>`
+		projHtml += `<a href="/pages/projects/#${project.replace(/\s/, "-")}">${project}</a>`
 	} else {
 		projHtml += `<a href="/posts/">all posts</a>`
 	}
