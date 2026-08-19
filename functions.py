@@ -127,7 +127,8 @@ def rss(title, link, description):
 	item = "<ttl>20000</ttl>\n\n\t<item>\n\t\t<title>" + title
 	item = item + "</title>\n\t\t<description>\n\t\t\t" + description 
 	item = item + "\n\t\t</description>\n\t\t<link>" + link 
-	item = item + "</link>\n\t\t<pubDate>\n\t\t\t" + date 
+	item = item + "</link>\n\t\t<guid>" + link 
+	item = item + "</guid>\n\t\t<pubDate>\n\t\t\t" + date 
 	item = item + "\n\t\t</pubDate>\n\t</item>"
 
 	lastbuild = "<lastBuildDate>\n\t\t" + date + "\n\t</lastBuildDate>"
