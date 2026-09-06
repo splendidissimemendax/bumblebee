@@ -100,7 +100,9 @@ def md(filename):
 	projects = re.sub(r"[\s\S]*projects: \[([^\]]*)[\s\S]*", r"\1", meta)
 
 	if dt == "":
-		dt = str(datetime.date.today()).replace("-", "/")
+		dt = str(datetime.date.today())
+
+	dt = dt.replace("-", "/")
 
 	formatted = dt + "/" + formatted
 
